@@ -16,7 +16,6 @@ return new class extends Migration
             $table->foreignId('booking_id')->unique()->constrained()->cascadeOnDelete();
             $table->text('cancellation_reason')->nullable();
             $table->date('cancellation_date');
-            $table->string('previous_status')->nullable();
             $table->timestamps();
         });
     }
