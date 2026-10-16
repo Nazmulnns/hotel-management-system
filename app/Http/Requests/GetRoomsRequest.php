@@ -67,6 +67,18 @@ class GetRoomsRequest extends FormRequest
                 'integer',
                 'min:1',
             ],
+            'check_in' => [
+                'sometimes',
+                'required_with:check_out',
+                'date',
+            ],
+            'check_out' => [
+                'sometimes',
+                'required_with:check_in',
+                'date',
+                'after:check_in',
+            ],
         ];
+
     }
 }

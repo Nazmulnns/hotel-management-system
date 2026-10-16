@@ -27,10 +27,10 @@ class RoomController extends Controller
             'pagination' => [
                 'current_page' => $rooms->currentPage(),
                 'per_page' => $rooms->perPage(),
-                'total' => $room->total(),
+                'total' => $rooms->total(),
                 'last_page' => $rooms->lastPage(),
                 'has_more_pages' => $rooms->hasMorePages(),
             ],
-        ])
+        ]);
     }
 }

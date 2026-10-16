@@ -11,6 +11,12 @@ class RoomService
     {
         $query = Room::with('images', 'maintenances', 'facilities', 'room_type');
 
+        if (isset($filters['check_in'], $filters['check_out'])) {
+            $query->whereDoesntHave('bookingRooms.booking', function ($q) use ($filters) {
+                $q->where('check_in', '<', $filters['check_out'])->where('check_out', '>', $filters['check_out']);
+            });
+        }
+
         if (!empty($filters['room_type_ids'])) {
             $query->whereIn('room_type_id', $filters['room_type_ids']);
         }
