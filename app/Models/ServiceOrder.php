@@ -2,11 +2,14 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ServiceOrder extends Model
 {
+    use HasFactory;
+
     protected $fillable = ['booking_id', 'service_id', 'quantity', 'total_price'];
 
     protected $touches = ['booking'];

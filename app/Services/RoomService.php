@@ -9,7 +9,7 @@ class RoomService
 {
     public function getAllRooms(?array $filters): LengthAwarePaginator
     {
-        $query = Room::with('images', 'maintenances', 'facilities', 'room_type');
+        $query = Room::with('images', 'maintenances', 'facilities', 'roomType');
 
         if (isset($filters['check_in'], $filters['check_out'])) {
             $query->whereDoesntHave('bookingRooms.booking', function ($q) use ($filters) {

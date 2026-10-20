@@ -2,11 +2,14 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Discount extends Model
 {
+    use HasFactory;
+
     protected $fillable = ['discount_code', 'discount_percentage', 'expiry_date'];
 
     protected function casts(): array

@@ -2,12 +2,15 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Invoice extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'invoice_number', 'booking_id', 'issue_date', 'due_date', 'room_total', 'services_total',
         'subtotal', 'discount_total', 'tax_total', 'grand_total', 'line_items', 'status',
