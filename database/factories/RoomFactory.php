@@ -34,7 +34,7 @@ class RoomFactory extends Factory
 
         foreach (range(1, 10) as $floor) {
             foreach (range('A', 'H') as $roomNumber) {
-                $rooms = [$floor, $roomNumber];
+                $rooms[] = [$floor, $roomNumber];
             }
         }
 

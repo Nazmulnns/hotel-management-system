@@ -7,7 +7,6 @@ use App\Models\Room;
 use App\Models\RoomImage;
 use App\Models\RoomMaintenance;
 use App\Models\RoomType;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class RoomSeeder extends Seeder
@@ -38,8 +37,8 @@ class RoomSeeder extends Seeder
                 ->create()
                 ->each(function (Room $room) use ($facilities): void {
                     $room->facilities()->attach(
-                        $facilities->random(fake()->numberBetween(2, 5))->pluk('id');
-                    )
+                        $facilities->random(fake()->numberBetween(2, 5))->pluk('id')
+                    );
                 });
         }
     }
