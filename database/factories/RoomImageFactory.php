@@ -20,7 +20,7 @@ class RoomImageFactory extends Factory
     {
         return [
             'room_id' => Room::factory(),
-            'image_url' => '/rooms/'.fake()->uuid().'.jpg',
+            'image_url' => '/rooms/' . fake()->uuid() . '.jpg',
         ];
     }
 }

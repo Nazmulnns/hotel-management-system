@@ -10,6 +10,7 @@ class Discount extends Model
 {
     use HasFactory;
 
+    public $timestamps = false;
     protected $fillable = ['discount_code', 'discount_percentage', 'expiry_date'];
 
     protected function casts(): array

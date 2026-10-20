@@ -33,7 +33,7 @@ class RoomFactory extends Factory
         $rooms = [];
 
         foreach (range(1, 10) as $floor) {
-            foreach (range('A', 'H') as $roomNumber) {
+            foreach (range('A', 'Z') as $roomNumber) {
                 $rooms[] = [$floor, $roomNumber];
             }
         }

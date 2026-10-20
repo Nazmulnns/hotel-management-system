@@ -21,7 +21,7 @@ class RoomTypeSeeder extends Seeder
         ];
 
         foreach ($roomTypes as $roomType) {
-            RoomType::updateOrCreate(['name' => $roomType['name'], 'description' => $roomType['description']]);
+            RoomType::updateOrCreate(['name' => $roomType['name']], ['description' => $roomType['description']]);
         }
     }
 }

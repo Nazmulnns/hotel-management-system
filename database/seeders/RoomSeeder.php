@@ -37,7 +37,7 @@ class RoomSeeder extends Seeder
                 ->create()
                 ->each(function (Room $room) use ($facilities): void {
                     $room->facilities()->attach(
-                        $facilities->random(fake()->numberBetween(2, 5))->pluk('id')
+                        $facilities->random(fake()->numberBetween(2, 5))->pluck('id')
                     );
                 });
         }

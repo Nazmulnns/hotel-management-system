@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -16,19 +17,19 @@ class Guest extends Model
         'full_name',
         'email',
         'phone_number',
-        'nid_number',
+        'identity_number',
         'date_of_birth',
         'nationality',
         'address',
-        'nid_front_image',
-        'nid_back_image',
+        'identity_front_image',
+        'identity_back_image',
         'guest_photo',
     ];
 
     protected $hidden = [
-        'nid_number',
-        'nid_front_image',
-        'nid_back_image',
+        'identity_number',
+        'identity_front_image',
+        'identity_back_image',
         'guest_photo',
     ];
 
@@ -72,5 +73,15 @@ class Guest extends Model
     {
         return filled($this->nid_number)
             && filled($this->nid_front_image);
+    }
+
+    protected function identityNumber(): Attribute
+    {
+        return Attribute::make(
+            set: fn (string $value) => [
+                'identity_number' => $value,
+                'identity_hash' => hash('sha256', $value),
+            ]
+        );
     }
 }
