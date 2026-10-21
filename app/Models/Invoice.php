@@ -19,6 +19,9 @@ class Invoice extends Model
     protected function casts(): array
     {
         return [
+            'issue_date' => 'date',
+            'due_date' => 'date',
+            'line_items' => 'array',
             'room_total' => 'decimal:2',
             'services_total' => 'decimal:2',
             'subtotal' => 'decimal:2',

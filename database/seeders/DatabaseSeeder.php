@@ -21,5 +21,30 @@ class DatabaseSeeder extends Seeder
             'name' => 'Test User',
             'email' => 'test@example.com',
         ]);
+
+        $this->call([
+            RoomTypeSeeder::class,
+            FacilitySeeder::class,
+            ServiceSeeder::class,
+            DiscountSeeder::class,
+        ]);
+
+        if (! app()->isProduction()) {
+            $this->call([
+                RoomSeeder::class,
+                GuestSeeder::class,
+                BookingSeeder::class,
+                CancellationSeeder::class,
+                ServiceOrderSeeder::class,
+                AppliedDiscountSeeder::class,
+                InvoiceSeeder::class,
+                PaymentSeeder::class,
+                RevenueSeeder::class,
+                FeedbackSeeder::class,
+                ReviewSeeder::class,
+                SupportRequestSeeder::class,
+                LoyaltyProgramSeeder::class,
+            ]);
+        }
     }
 }
