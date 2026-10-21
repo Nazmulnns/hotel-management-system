@@ -17,6 +17,16 @@ class Booking extends Model
 
     protected $fillable = ['reference', 'guest_id', 'booking_date', 'check_in', 'check_out', 'total_amount', 'status'];
 
+    protected function casts(): array
+    {
+        return [
+            'booking_date' => 'date',
+            'check_in' => 'date',
+            'check_out' => 'date',
+            'total_amount' => 'decimal:2',
+        ];
+    }
+
     public function guest(): BelongsTo
     {
         return $this->belongsTo(Guest::class);
@@ -84,6 +94,6 @@ class Booking extends Model
     {
         $query->where($query->qualifyColumn('check_in'), '<=', $checkOut)
             ->where($query->qualifyColumn('check_out'), '>=', $checkIn)
-            ->where($query->qualifyColumn('status'), '!=', 'Cancelled');
+            ->where($query->qualifyColumn('status'), '!=', 'cancelled');
     }
 }

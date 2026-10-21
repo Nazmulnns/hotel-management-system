@@ -29,7 +29,7 @@ class BookingFactory extends Factory
                 CarbonImmutable::parse($attributes['check_in'])->addDay(),
                 CarbonImmutable::parse($attributes['check_in'])->addDays(7)
             ))->startOfDay(),
-            'booking_date' => fn(array $attributes) => CarbonImmutable::parse($attributes['check_in'])->subDays(fake()->numberBetween(1, 30)),
+            'booking_date' => fn(array $attributes) => CarbonImmutable::parse($attributes['check_in'])->subDays(fake()->numberBetween(1, 30))->min(CarbonImmutable::today()),
             'total_amount' => fake()->randomFloat(2, 1000, 20000),
             'status' => fn (array $attributes) => $this->statusForDates(
                 CarbonImmutable::parse($attributes['check_in']),

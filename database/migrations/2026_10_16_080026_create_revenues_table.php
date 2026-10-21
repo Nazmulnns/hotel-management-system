@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('booking_id')->constrained('bookings');
             $table->foreignId('payment_id')->constrained('payments');
             $table->string('source');
-            $table->decimal('ammount', 10, 2);
+            $table->decimal('amount', 10, 2);
             $table->dateTime('revenue_date');
             $table->timestamps();
         });

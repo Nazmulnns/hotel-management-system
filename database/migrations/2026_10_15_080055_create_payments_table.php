@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('booking_id')->constrained('bookings');
             $table->foreignId('invoice_id')->constrained('invoices');
-            $table->decimal('ammount', 10, 2);
+            $table->decimal('amount', 10, 2);
             $table->dateTime('payment_date');
             $table->string('payment_method');
             $table->string('status')->default('unchecked');

@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Booking;
 use App\Models\Cancellation;
 use Illuminate\Database\Seeder;
 
@@ -12,6 +13,9 @@ class CancellationSeeder extends Seeder
      */
     public function run(): void
     {
-        Cancellation::factory(20)->create();
+        Booking::where('status', 'cancelled')
+            ->doesntHave('cancellation')
+            ->get()
+            ->each(fn (Booking $booking) => Cancellation::factory()->for($booking)->create());
     }
 }

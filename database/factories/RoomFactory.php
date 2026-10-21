@@ -22,7 +22,7 @@ class RoomFactory extends Factory
         return [
             'floor' => $floor,
             'room_number' => $roomNumber,
-            'room_type_id' => RoomType::factory(),
+            'room_type_id' => fn () => RoomType::inRandomOrder()->value('id') ?? RoomType::factory(),
             'price_per_night' => fake()->randomFloat(2, 2000, 20000),
             'max_occupancy' => fake()->numberBetween(1, 8),
         ];

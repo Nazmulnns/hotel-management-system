@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('applied_discounts', function (Blueprint $table) {;
+        Schema::create('applied_discounts', function (Blueprint $table) {
             $table->foreignId('booking_id')->constrained()->restrictOnDelete();
             $table->foreignId('discount_id')->constrained()->restrictOnDelete();
-            $table->decimal('ammount_saved', 10, 2)->default(0);
+            $table->decimal('amount_saved', 10, 2)->default(0);
             $table->primary(['booking_id', 'discount_id']);
             $table->timestamps();
         });

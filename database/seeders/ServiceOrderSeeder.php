@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\ServiceOrder;
 use Illuminate\Database\Seeder;
 
 class ServiceOrderSeeder extends Seeder
@@ -12,6 +12,6 @@ class ServiceOrderSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        ServiceOrder::factory(60)->create();
     }
 }
