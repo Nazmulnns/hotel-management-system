@@ -22,7 +22,7 @@ class InvoiceFactory extends Factory
     public function definition(): array
     {
         return [
-            'booking_id' => Booking::isRandomOrder()->value('id') ?? Booking::factory()->withRoom(),
+            'booking_id' => Booking::inRandomOrder()->value('id') ?? Booking::factory()->withRoom(),
             'invoice_number' => fn (array $attributes) => 'INV-' . str_pad((string) $attributes['booking_id'], 6, '0', STR_PAD_LEFT),
             'status' => 'issued',
         ];

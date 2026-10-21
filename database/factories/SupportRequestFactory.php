@@ -19,7 +19,7 @@ class SupportRequestFactory extends Factory
     public function definition(): array
     {
         return [
-            'guest_id' => Guest::isRandomOrder()->value('id') ?? Guest::factory(),
+            'guest_id' => Guest::inRandomOrder()->value('id') ?? Guest::factory(),
             'issue' => fake()->randomElement([
                 'AC not working',
                 'Need extra towels',

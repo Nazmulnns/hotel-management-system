@@ -10,7 +10,7 @@ class Review extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['guest_id', 'room_id', 'rating', 'review_text'];
+    protected $fillable = ['guest_id', 'booking_id', 'rating', 'text'];
 
     protected function casts(): array
     {
@@ -22,8 +22,8 @@ class Review extends Model
         return $this->belongsTo(Guest::class);
     }
 
-    public function room(): BelongsTo
+    public function booking(): BelongsTo
     {
-        return $this->belongsTo(Room::class);
+        return $this->belongsTo(Booking::class);
     }
 }

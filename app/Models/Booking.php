@@ -75,6 +75,11 @@ class Booking extends Model
         return $this->hasMany(ServiceOrder::class);
     }
 
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(Review::class);
+    }
+
     public function services(): BelongsToMany
     {
         return $this->belongsToMany(Service::class, 'service_orders')

@@ -10,7 +10,7 @@ class Cancellation extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['booking_id', 'cancellation_reason', 'date'];
+    protected $fillable = ['booking_id', 'cancellation_reason', 'cancellation_date'];
 
     public function booking(): BelongsTo
     {

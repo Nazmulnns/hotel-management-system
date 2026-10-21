@@ -5,7 +5,6 @@ namespace Database\Factories;
 use App\Models\Booking;
 use App\Models\Guest;
 use App\Models\Room;
-use Attribute;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -30,7 +29,7 @@ class BookingFactory extends Factory
                 CarbonImmutable::parse($attributes['check_in'])->addDays(7)
             ))->startOfDay(),
             'booking_date' => fn(array $attributes) => CarbonImmutable::parse($attributes['check_in'])->subDays(fake()->numberBetween(1, 30))->min(CarbonImmutable::today()),
-            'total_amount' => fake()->randomFloat(2, 1000, 20000),
+            'total_amount' => 0,
             'status' => fn (array $attributes) => $this->statusForDates(
                 CarbonImmutable::parse($attributes['check_in']),
                 CarbonImmutable::parse($attributes['check_out']),
