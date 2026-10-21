@@ -11,11 +11,11 @@ class Discount extends Model
     use HasFactory;
 
     public $timestamps = false;
-    protected $fillable = ['discount_code', 'discount_percentage', 'expiry_date'];
+    protected $fillable = ['discount_code', 'percentage', 'expiry_date'];
 
     protected function casts(): array
     {
-        return ['discount_percentage' => 'decimal:2', 'expiry_date' => 'date'];
+        return ['percentage' => 'decimal:2', 'expiry_date' => 'date'];
     }
 
     public function bookings(): BelongsToMany

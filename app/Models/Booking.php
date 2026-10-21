@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Carbon\CarbonInterface;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -25,8 +27,7 @@ class Booking extends Model
         return $this->belongsToMany(Room::class, 'booking_rooms')
             ->using(BookingRoom::class)
             ->withPivot(['id', 'price_per_night', 'guests'])
-            ->withTimestamps()
-            ->withTrashed();
+            ->withTimestamps();
     }
 
     public function bookingRooms(): HasMany
@@ -77,5 +78,12 @@ class Booking extends Model
             ->withoutGlobalScopes()
             ->withPivot('amount_saved')
             ->withTimestamps();
+    }
+
+    public function scopeOverlapping(Builder $query, CarbonInterface $checkIn, CarbonInterface $checkOut): void
+    {
+        $query->where($query->qualifyColumn('check_in'), '<=', $checkOut)
+            ->where($query->qualifyColumn('check_out'), '>=', $checkIn)
+            ->where($query->qualifyColumn('status'), '!=', 'Cancelled');
     }
 }

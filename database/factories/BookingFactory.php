@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Booking;
 use App\Models\Guest;
+use App\Models\Room;
 use Attribute;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -28,6 +29,7 @@ class BookingFactory extends Factory
                 CarbonImmutable::parse($attributes['check_in'])->addDay(),
                 CarbonImmutable::parse($attributes['check_in'])->addDays(7)
             ))->startOfDay(),
+            'booking_date' => fn(array $attributes) => CarbonImmutable::parse($attributes['check_in'])->subDays(fake()->numberBetween(1, 30)),
             'total_amount' => fake()->randomFloat(2, 1000, 20000),
             'status' => fn (array $attributes) => $this->statusForDates(
                 CarbonImmutable::parse($attributes['check_in']),
@@ -52,5 +54,23 @@ class BookingFactory extends Factory
             $checkIn->lte($today) => 'checked_in',
             default => fake()->randomElement(['pending', 'confirmed']),
          };
+    }
+
+    public function withRoom(?Room $room = null): static
+    {
+        return $this->afterCreating(function (Booking $booking) use ($room): void {
+            $room ??= Room::factory()->create();
+
+            $booking->rooms()->attach($room->id, [
+                'price_per_night' => $room->price_per_night,
+                'guests' => fake()->numberBetween(1, $room->max_occupancy),
+            ]);
+
+            $nights = (int) CarbonImmutable::parse($booking->check_in)->diffInDays($booking->check_out);
+
+            $booking->update([
+                'total_amount' => round($room->price_per_night * $nights, 2),
+            ]);
+        });
     }
 }

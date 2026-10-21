@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
-class BookingRoom extends Model
+class BookingRoom extends Pivot
 {
     use HasFactory;
 
@@ -35,6 +35,6 @@ class BookingRoom extends Model
 
     public function room(): BelongsTo
     {
-        return $this->belongsTo(Room::class)->withTrashed();
+        return $this->belongsTo(Room::class);
     }
 }
