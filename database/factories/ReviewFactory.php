@@ -19,7 +19,7 @@ class ReviewFactory extends Factory
     public function definition(): array
     {
         return [
-            'booking_id' => Booking::inRandomOrder()->value('id') ?? Booking::factory(),
+            'booking_id' => Booking::factory(),
             'guest_id' => fn (array $attributes) => Booking::findOrFail($attributes['booking_id'])->guest_id,
             'rating' => fake()->numberBetween(1, 5),
             'text' => fake()->sentence(),

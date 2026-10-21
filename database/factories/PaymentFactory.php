@@ -20,7 +20,7 @@ class PaymentFactory extends Factory
     public function definition(): array
     {
         return [
-            'invoice_id' => Invoice::inRandomOrder()->value('id') ?? Invoice::factory(),
+            'invoice_id' => Invoice::factory(),
             'booking_id' => fn (array $attributes) => Invoice::findOrFail($attributes['invoice_id'])->booking_id,
             'amount' => fn (array $attributes) => Invoice::findOrFail($attributes['invoice_id'])->grand_total,
             'payment_date' => function (array $attributes) {
