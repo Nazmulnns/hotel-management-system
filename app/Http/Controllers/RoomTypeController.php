@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreRoomTypeRequest;
+use App\Http\Resources\RoomTypeResource;
 use App\Services\RoomTypeService;
 use Exception;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class RoomTypeController extends Controller
 {
@@ -17,13 +18,13 @@ class RoomTypeController extends Controller
         $this->roomTypeService = $roomTypeService;
     }
 
-    public function getAllRoomTypes(): JsonResponse
+    public function getAllRoomTypes(): AnonymousResourceCollection
     {
         $roomTypes = $this->roomTypeService->getAllRoomTypes();
-        return response()->json(['data' => $roomTypes], 200);
+        return RoomTypeResource::collection($roomTypes);
     }
 
-    public function updateRoomType(StoreRoomTypeRequest $request): JsonResponse
+    public function updateRoomType(StoreRoomTypeRequest $request): JsonResponse|RoomTypeResource
     {
         try {
             $request->validated();
@@ -31,29 +32,30 @@ class RoomTypeController extends Controller
             $roomType = $this->roomTypeService->findRoomTypeById($roomTypeId);
 
             if (empty($roomType)) {
-                return response()->json(['message' => "Room Type does not exists with roomType id {$roomTypeId}"], 404);
+                return response()->json(['message' => "Room Type does not exists with roomType id {$roomTypeId}"]);
             }
 
-            $this->roomTypeService->updateRoomTypeById($roomType, $request->name, $request->description);
-            return response()->json(['message' => "Room Type Updated Successfully"], 201);
+            $updatedRoomType = $this->roomTypeService->updateRoomTypeById($roomType, $request->name, $request->description);
+            return (new RoomTypeResource($updatedRoomType))
+                ->additional(['message' => "Room Type {$roomTypeId} Updated Successfully"]);
         } catch (Exception $e) {
-            return response()->json(['message' => "Something went wrong"], 500);
+            return response()->json(['message' => "Something went wrong"]);
         }
     }
 
-    public function addNewRoomType(StoreRoomTypeRequest $request): JsonResponse
+    public function addNewRoomType(StoreRoomTypeRequest $request): JsonResponse|RoomTypeResource
     {
         try {
             $validated = $request->validated();
             $newRoomTypeName = $validated['name'];
             if ($this->roomTypeService->isRoomTypeExists($newRoomTypeName)) {
-                return response()->json(['message' => "Room Type {$newRoomTypeName} is already exists"], 409);
+                return response()->json(['message' => "Room Type {$newRoomTypeName} is already exists"]);
             }
 
-            $this->roomTypeService->addNewRoomType($newRoomTypeName, $request->description);
-            return response()->json(['message' => "Room Type {$newRoomTypeName} is successfully added"], 201);
+            $roomType = $this->roomTypeService->addNewRoomType($newRoomTypeName, $request->description);
+            return (new RoomTypeResource($roomType))->additional(['message' => "Room Type {$newRoomTypeName} is successfully added"]);
         } catch (Exception $e) {
-            return response()->json(['message' => "Something went wrong"], 500);
+            return response()->json(['message' => "Something went wrong"]);
         }
     }
 

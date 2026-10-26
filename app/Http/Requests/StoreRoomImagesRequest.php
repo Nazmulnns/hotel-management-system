@@ -12,7 +12,7 @@ class StoreRoomImagesRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,7 +23,17 @@ class StoreRoomImagesRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'images' => ['required', 'array', 'min:1', 'max:10'],
+            'images.*' => ['required', 'image', 'mimes:jpg,jpeg,png,webp', 'max:5120'],
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'images.required' => 'Please upload at least one image.',
+            'images.*.image' => 'Each file must be an image.',
+            'images.*.max' => 'Each image must be 5 MB or smaller.',
         ];
     }
 }

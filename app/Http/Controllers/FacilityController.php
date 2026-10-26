@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreFacilityRequest;
+use App\Http\Resources\FacilityResource;
 use App\Services\FacilityService;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class FacilityController extends Controller
 {
@@ -17,44 +19,42 @@ class FacilityController extends Controller
         $this->facilityService = $facilityService;
     }
 
-    public function getAllFacilities(): JsonResponse
+    public function getAllFacilities(): AnonymousResourceCollection
     {
         $facilities = $this->facilityService->getAll();
-        return response()->json(['data' => $facilities], 200);
+        return FacilityResource::collection($facilities);
     }
 
-    public function updateFacility(StoreFacilityRequest $request): JsonResponse
+    public function updateFacility(StoreFacilityRequest $request, int $facilityId): FacilityResource|JsonResponse
     {
         try {
             $request->validated();
-            $facilityId = $request->id;
             $facility = $this->facilityService->findFacilityById($facilityId);
-            $preFacilityName = $facility->facility_name;
 
             if (empty($facility)) {
                 return response()->json(['message' => "Facility does not exists with facility id {$facilityId}"], 404);
             }
 
-            $this->facilityService->updateFacilityNameById($facility, $request->facility_name);
-            return response()->json(['message' => "Facility {$preFacilityName} is changed to {$request->facility_name} successfully"], 201);
+            $preFacilityName = $facility->facility_name;
+
+            $updatedFacility = $this->facilityService->updateFacilityNameById($facility, $request->facility_name);
+            return (new FacilityResource($updatedFacility))
+                ->additional(['message' => "Facility {$preFacilityName} is changed to {$request->facility_name} successfully"]);
         } catch (Exception $e) {
-            return response()->json(['message' => "Something went wrong"], 500);
+            return response()->json(['message' => "Something went wrong"]);
         }
     }
 
-    public function addNewFacility(StoreFacilityRequest $request): JsonResponse
+    public function addNewFacility(StoreFacilityRequest $request): FacilityResource|JsonResponse
     {
         try {
             $validated = $request->validated();
             $newFacilityName = $validated['facility_name'];
-            if ($this->facilityService->isFacilityNameExists($newFacilityName)) {
-                return response()->json(['message' => "Facility Name {$newFacilityName} is already exists"], 409);
-            }
 
-            $this->facilityService->addNewFacility($newFacilityName);
-            return response()->json(['message' => "Facility Name {$newFacilityName} is successfully added"], 201);
+            return (new FacilityResource($this->facilityService->addNewFacility($newFacilityName)))
+                ->additional(['message' => "Facility Name {$newFacilityName} is successfully added"]);
         } catch (Exception $e) {
-            return response()->json(['message' => "Something went wrong"], 500);
+            return response()->json(['message' => "Something went wrong"]);
         }
     }
 
@@ -69,7 +69,7 @@ class FacilityController extends Controller
             $this->facilityService->deleteFacility($facility);
             return response()->json(['message' => "Facility {$facility->facility_name} is deleted successfully"], 200);
         } catch (Exception $e) {
-            return response()->json(['message' => "Something went wrong {$e}"], 500);
+            return response()->json(['message' => "Something went wrong"]);
         }
     }
 }

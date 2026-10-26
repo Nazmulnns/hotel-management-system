@@ -101,4 +101,11 @@ class Booking extends Model
             ->where($query->qualifyColumn('check_out'), '>=', $checkIn)
             ->where($query->qualifyColumn('status'), '!=', 'cancelled');
     }
+
+    public function scopeUpcoming(Builder $query): void
+    {
+        $query->where($query->qualifyColumn('check_out'), '>', today())
+            ->whereIn($query->qualifyColumn('status'), ['pending', 'confirmed', 'checked_in'])
+            ->orderBy($query->qualifyColumn('check_in'));
+    }
 }

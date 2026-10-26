@@ -24,12 +24,12 @@ class GetRoomsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'facility_id' => [
+            'facility_ids' => [
                 'sometimes',
                 'integer',
                 'exists:facilities,id',
             ],
-            'room_type_id' => [
+            'room_type_ids' => [
                 'sometimes',
                 'integer',
                 'exists:room_types,id',
@@ -79,6 +79,5 @@ class GetRoomsRequest extends FormRequest
                 'after:check_in',
             ],
         ];
-
     }
 }

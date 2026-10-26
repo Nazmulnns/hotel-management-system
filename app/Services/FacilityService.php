@@ -3,11 +3,10 @@
 namespace App\Services;
 
 use App\Models\Facility;
-use Exception;
 
 class FacilityService
 {
-    public function getAll()
+    public function getAll(): ?Facility
     {
         return Facility::all();
     }
@@ -24,7 +23,7 @@ class FacilityService
 
     public function updateFacilityNameById(Facility $facility, string $newFacilityName): ?Facility
     {
-        $facility->facility_name = strtoupper(str_replace('"', '', $newFacilityName));
+        $facility->facility_name = $newFacilityName;
         $facility->save();
         return $facility;
     }
@@ -32,7 +31,7 @@ class FacilityService
     public function addNewFacility(string $facilityName)
     {
         $newFacility = new Facility();
-        $newFacility->facility_name = strtoupper(str_replace('"', '', $facilityName));
+        $newFacility->facility_name = $facilityName;
         $newFacility->save();
         return $newFacility;
     }
