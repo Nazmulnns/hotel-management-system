@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\FacilityController;
+use App\Http\Controllers\GuestController;
 use App\Http\Controllers\RoomImageController;
 use App\Http\Controllers\RoomTypeController;
 use App\Http\Controllers\UserController;
@@ -32,3 +33,9 @@ Route::delete('/rooms/{id}', [RoomController::class, 'deleteRoom']);
 //CRUD Operations for RoomImages
 Route::post('/rooms/{id}/images', [RoomImageController::class, 'addNewRoomImages']);
 Route::delete('/room-images/{id}', [RoomImageController::class, 'deleteRoomImageById']);
+
+//CRUD Operation for Guests
+Route::get('/guests/{id}', [GuestController::class, 'findGuestById']);
+Route::get('/guests', [GuestController::class, 'getGuests']);
+Route::get('/guests/{identity_number}', [GuestController::class, 'findGuestByIdentity']);
+Route::post('/guests', [GuestController::class, 'createGuest']);

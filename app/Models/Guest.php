@@ -84,4 +84,9 @@ class Guest extends Model
             ]
         );
     }
+    
+    public static function hashIdentity(string $identityNumber): string
+    {
+        return hash('sha256', $identityNumber);
+    }
 }
