@@ -24,16 +24,13 @@ class GetRoomsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'facility_ids' => [
-                'sometimes',
-                'integer',
-                'exists:facilities,id',
-            ],
+            'facility_ids' => ['sometimes', 'array'],
+            'facility_ids.*' => ['integer', 'distinct', 'exists:facilities,id'],
             'room_type_ids' => [
                 'sometimes',
-                'integer',
-                'exists:room_types,id',
+                'array',
             ],
+            'room_type_ids.*' => ['integer', 'distinct', 'exists:facilities,id'],
             'min_price' => [
                 'sometimes',
                 'numeric',

@@ -15,7 +15,7 @@ class RoomService
 
         if (isset($filters['check_in'], $filters['check_out'])) {
             $query->whereDoesntHave('bookingRooms.booking', function ($q) use ($filters) {
-                $q->where('check_in', '<', $filters['check_out'])->where('check_out', '>', $filters['check_out']);
+                $q->where('check_in', '<', $filters['check_out'])->where('check_out', '>', $filters['check_in']);
             });
         }
 
