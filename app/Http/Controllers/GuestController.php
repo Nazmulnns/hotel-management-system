@@ -32,11 +32,6 @@ class GuestController extends Controller
         return GuestResource::collection($guests);
     }
 
-    public function findGuestByIdentity(string $identity_number): ?int
-    {
-        return $this->guestService->findGuestByIdentityNumber($identity_number)?->id;
-    }
-
     public function createGuest(StoreGuestRequest $request): GuestResource
     {
         $request = $request->validated();

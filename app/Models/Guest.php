@@ -71,8 +71,7 @@ class Guest extends Model
 
     public function hasIdentity(): bool
     {
-        return filled($this->nid_number)
-            && filled($this->nid_front_image);
+        return filled($this->identity_number) && filled($this->identity_front_image);
     }
 
     protected function identityNumber(): Attribute

@@ -37,5 +37,4 @@ Route::delete('/room-images/{id}', [RoomImageController::class, 'deleteRoomImage
 //CRUD Operation for Guests
 Route::get('/guests/{id}', [GuestController::class, 'findGuestById']);
 Route::get('/guests', [GuestController::class, 'getGuests']);
-Route::get('/guests/{identity_number}', [GuestController::class, 'findGuestByIdentity']);
 Route::post('/guests', [GuestController::class, 'createGuest']);

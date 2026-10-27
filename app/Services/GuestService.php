@@ -8,7 +8,7 @@ use Storage;
 
 class GuestService
 {
-    public function findGuestById(int $id): Guest
+    public function findGuestById(int $id): ?Guest
     {
         return Guest::with('bookings')->find($id);
     }
@@ -31,11 +31,6 @@ class GuestService
         $perPage = $filters['per_page'] ?? 10;
 
         return $query->paginate($perPage)->withQueryString();
-    }
-
-    public function findGuestByIdentityNumber(string $identity_number): Guest
-    {
-        return Guest::where('identity_hash', Guest::hashIdentity($identity_number));
     }
 
     public function createGuest(array $data): Guest
