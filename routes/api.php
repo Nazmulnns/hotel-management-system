@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DiscountController;
 use App\Http\Controllers\FacilityController;
 use App\Http\Controllers\GuestController;
 use App\Http\Controllers\RoomImageController;
@@ -47,3 +48,10 @@ Route::get('/services/{id}', [ServiceController::class, 'findServiceById']);
 Route::post('/services', [ServiceController::class, 'createNewService']);
 Route::put('/services/{id}', [ServiceController::class, 'updateService']);
 Route::delete('/services/{id}', [ServiceController::class, 'deleteService']);
+
+//CRUD Operations for Discounts
+Route::get('/discounts', [DiscountController::class, 'getDiscounts']);
+Route::get('/discounts/{id}', [DiscountController::class, 'findDiscountById'])->whereNumber('id');
+Route::post('/discounts', [DiscountController::class, 'addNewDiscount']);
+Route::put('/discounts/{id}', [DiscountController::class, 'updateDiscount'])->whereNumber('id');
+Route::delete('/discounts/{id}', [DiscountController::class, 'deleteDiscountById'])->whereNumber('id');
