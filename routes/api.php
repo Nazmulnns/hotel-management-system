@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BookingController;
 use App\Http\Controllers\DiscountController;
 use App\Http\Controllers\FacilityController;
 use App\Http\Controllers\GuestController;
@@ -10,7 +11,6 @@ use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RoomController;
 use Illuminate\Support\Facades\Route;
-use PHPUnit\Architecture\Services\ServiceContainer;
 
 Route::get('/users', [UserController::class, 'getUsers']);
 Route::get('/users/{id}', [UserController::class, 'getUserById']);
@@ -63,3 +63,9 @@ Route::get('/room-maintenances/{id}', [RoomMaintenanceController::class, 'findMa
 Route::put('/room-maintenances/{id}', [RoomMaintenanceController::class, 'updateMaintenance'])->whereNumber('id');
 Route::get('/rooms/{id}/maintenances', [RoomMaintenanceController::class, 'getRoomMaintenances'])->whereNumber('id');
 Route::post('/rooms/{id}/maintenances', [RoomMaintenanceController::class, 'reportMaintenance'])->whereNumber('id');
+
+//CRUD Operations for Bookings
+Route::get('/bookings', [BookingController::class, 'getBookings']);
+Route::get('/bookings/{id}', [BookingController::class, 'findBookingById'])->whereNumber('id');
+Route::post('/bookings', [BookingController::class, 'createBooking']);
+Route::patch('/bookings/{id}/status', [BookingController::class, 'updateBookingStatus'])->whereNumber('id');

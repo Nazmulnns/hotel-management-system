@@ -3,8 +3,7 @@
 namespace App\Services;
 
 use App\Models\Guest;
-use Illuminate\Pagination\LengthAwarePaginator;
-use Storage;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class GuestService
 {

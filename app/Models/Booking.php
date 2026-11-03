@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\BookingStatus;
 use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -10,7 +11,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Carbon;
 
+/**
+ * @property Carbon $booking_date
+ * @property Carbon $check_in
+ * @property Carbon $check_out
+ * @property \App\Enums\BookingStatus $status
+ */
 class Booking extends Model
 {
     use HasFactory;
@@ -24,6 +32,7 @@ class Booking extends Model
             'check_in' => 'date',
             'check_out' => 'date',
             'total_amount' => 'decimal:2',
+            'status' => BookingStatus::class,
         ];
     }
 
@@ -97,9 +106,9 @@ class Booking extends Model
 
     public function scopeOverlapping(Builder $query, CarbonInterface $checkIn, CarbonInterface $checkOut): void
     {
-        $query->where($query->qualifyColumn('check_in'), '<=', $checkOut)
-            ->where($query->qualifyColumn('check_out'), '>=', $checkIn)
-            ->where($query->qualifyColumn('status'), '!=', 'cancelled');
+        $query->where($query->qualifyColumn('check_in'), '<', $checkOut)
+            ->where($query->qualifyColumn('check_out'), '>', $checkIn)
+            ->whereNotIn($query->qualifyColumn('status'), [BookingStatus::Cancelled, BookingStatus::CheckedOut]);
     }
 
     public function scopeUpcoming(Builder $query): void

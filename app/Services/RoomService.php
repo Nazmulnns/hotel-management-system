@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Models\Room;
-use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
@@ -46,8 +46,7 @@ class RoomService
         $sortBy = $filters['sort_by'] ?? 'price_per_night';
         $sortOrder = $filters['sort_order'] ?? 'asc';
 
-        $query->orderBy($sortBy, $sortOrder)
-              ->orderBy('id', 'asc');
+        $query->orderBy($sortBy, $sortOrder);
 
         return $query->paginate($filters['per_page'] ?? 10)->withQueryString();
     }

@@ -5,7 +5,7 @@ namespace App\Services;
 use App\Enums\MaintenanceStatus;
 use App\Models\Room;
 use App\Models\RoomMaintenance;
-use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class RoomMaintenanceService
 {
