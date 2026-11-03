@@ -12,7 +12,7 @@ class StoreRoomMaintenanceRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,7 +23,7 @@ class StoreRoomMaintenanceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'issue_description' => ['required', 'string', 'min:10', 'max:500'],
         ];
     }
 }

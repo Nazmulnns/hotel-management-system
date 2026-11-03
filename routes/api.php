@@ -4,6 +4,7 @@ use App\Http\Controllers\DiscountController;
 use App\Http\Controllers\FacilityController;
 use App\Http\Controllers\GuestController;
 use App\Http\Controllers\RoomImageController;
+use App\Http\Controllers\RoomMaintenanceController;
 use App\Http\Controllers\RoomTypeController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\UserController;
@@ -55,3 +56,10 @@ Route::get('/discounts/{id}', [DiscountController::class, 'findDiscountById'])->
 Route::post('/discounts', [DiscountController::class, 'addNewDiscount']);
 Route::put('/discounts/{id}', [DiscountController::class, 'updateDiscount'])->whereNumber('id');
 Route::delete('/discounts/{id}', [DiscountController::class, 'deleteDiscountById'])->whereNumber('id');
+
+//CRUD Operations for Room Maintenances
+Route::get('/room-maintenances', [RoomMaintenanceController::class, 'getMaintenances']);
+Route::get('/room-maintenances/{id}', [RoomMaintenanceController::class, 'findMaintenanceById'])->whereNumber('id');
+Route::put('/room-maintenances/{id}', [RoomMaintenanceController::class, 'updateMaintenance'])->whereNumber('id');
+Route::get('/rooms/{id}/maintenances', [RoomMaintenanceController::class, 'getRoomMaintenances'])->whereNumber('id');
+Route::post('/rooms/{id}/maintenances', [RoomMaintenanceController::class, 'reportMaintenance'])->whereNumber('id');

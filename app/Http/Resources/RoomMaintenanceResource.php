@@ -17,8 +17,12 @@ class RoomMaintenanceResource extends JsonResource
         return [
             'id' => $this->id,
             'room_id' => $this->room_id,
+            'room' => new RoomResource($this->whenLoaded('room')),
             'issue_description' => $this->issue_description,
-            'maintenance_status' => $this->maintenance_status,
+            'maintenance_status' => $this->maintenance_status->value,
+            'maintenance_status_label' => $this->maintenance_status->label(),
+            'reported_at' => $this->created_at?->toDateTimeString(),
+            'updated_at' => $this->updated_at?->toDateTimeString(),
         ];
     }
 }

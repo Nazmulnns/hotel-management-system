@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\MaintenanceStatus;
 use App\Models\Room;
 use App\Models\RoomMaintenance;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -21,7 +22,7 @@ class RoomMaintenanceFactory extends Factory
         return [
             'room_id' => Room::factory(),
             'issue_description' => fake()->randomElement(['AC servicing', 'Plumbing check', 'Repainting', 'Light replacement', 'Carpet cleaning']),
-            'maintenance_status' => fake()->randomElement(['pending', 'inProgress', 'completed']),
+            'maintenance_status' => fake()->randomElement(MaintenanceStatus::cases()),
         ];
     }
 }
