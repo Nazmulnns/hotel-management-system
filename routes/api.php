@@ -4,10 +4,12 @@ use App\Http\Controllers\BookingController;
 use App\Http\Controllers\DiscountController;
 use App\Http\Controllers\FacilityController;
 use App\Http\Controllers\GuestController;
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\RoomImageController;
 use App\Http\Controllers\RoomMaintenanceController;
 use App\Http\Controllers\RoomTypeController;
 use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\SupportRequestController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RoomController;
 use Illuminate\Support\Facades\Route;
@@ -69,3 +71,13 @@ Route::get('/bookings', [BookingController::class, 'getBookings']);
 Route::get('/bookings/{id}', [BookingController::class, 'findBookingById'])->whereNumber('id');
 Route::post('/bookings', [BookingController::class, 'createBooking']);
 Route::patch('/bookings/{id}/status', [BookingController::class, 'updateBookingStatus'])->whereNumber('id');
+
+//CRUD Operations for Reviews
+Route::get('/reviews', [ReviewController::class, 'getReviews']);
+Route::post('/bookings/{id}/review', [ReviewController::class, 'addReview'])->whereNumber('id');
+
+//CRUD Operations for Support Requests
+Route::get('/support-requests', [SupportRequestController::class, 'getSupportRequests']);
+Route::get('/support-requests/{id}', [SupportRequestController::class, 'findSupportRequestById'])->whereNumber('id');
+Route::patch('/support-requests/{id}', [SupportRequestController::class, 'updateSupportRequest'])->whereNumber('id');
+Route::post('/guests/{id}/support-requests', [SupportRequestController::class, 'createSupportRequest'])->whereNumber('id');

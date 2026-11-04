@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Booking;
 use App\Models\Guest;
 use App\Models\SupportRequest;
 use Illuminate\Database\Seeder;
@@ -14,10 +15,17 @@ class SupportRequestSeeder extends Seeder
      */
     public function run(): void
     {
-        $guestsWhoStayed = Guest::whereHas('bookings', fn ($query) => $query->whereIn('status', ['checked_in', 'checked_out']))->get();
+        $stays = Booking::whereIn('status', ['checked_in', 'checked_out'])->with('rooms:id')->get();
 
-        DB::transaction(function () use ($guestsWhoStayed): void {
-            SupportRequest::factory(100)->recycle($guestsWhoStayed)->create();
+        DB::transaction(function () use ($stays): void {
+            foreach (range(1, 100) as $index) {
+                $booking = $stays->random();
+
+                SupportRequest::factory()->create([
+                    'guest_id' => $booking->guest_id,
+                    'room_id' => $booking->rooms->random()->id,
+                ]);
+            }
         });
     }
 }
