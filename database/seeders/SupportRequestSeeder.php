@@ -16,6 +16,9 @@ class SupportRequestSeeder extends Seeder
     public function run(): void
     {
         $stays = Booking::whereIn('status', ['checked_in', 'checked_out'])->with('rooms:id')->get();
+        if ($stays->isEmpty()) {
+            return;
+        }
 
         DB::transaction(function () use ($stays): void {
             foreach (range(1, 100) as $index) {

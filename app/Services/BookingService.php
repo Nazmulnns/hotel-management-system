@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Enums\BookingStatus;
 use App\Enums\MaintenanceStatus;
+use App\Mail\ReviewRequest;
 use App\Models\Booking;
 use App\Models\Room;
 use Carbon\Carbon;
@@ -12,6 +13,8 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
+use Mail;
+use function Illuminate\Support\minutes;
 
 class BookingService
 {
@@ -71,6 +74,10 @@ class BookingService
             throw ValidationException::withMessages([
                 'status' => "This booking cannot be checked in before {$booking->check_in->toDateString()}.",
             ]);
+        }
+
+        if ($newStatus === BookingStatus::CheckedOut) {
+            $this->sendReviewRequest($booking);
         }
 
         $booking->update(['status' => $newStatus]);
@@ -151,5 +158,17 @@ class BookingService
         } while (Booking::where('reference', $reference)->exists());
 
         return $reference;
+    }
+
+    private function sendReviewRequest(Booking $booking): void
+    {
+       /* if ($booking->reviews()->exists()) {
+            return;
+        }*/
+
+        Mail::to($booking->guest->email)->later(
+            now()->plus(minutes: 1),
+            (new ReviewRequest($booking))->afterCommit(),
+        );
     }
 }
