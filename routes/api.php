@@ -4,6 +4,7 @@ use App\Http\Controllers\BookingController;
 use App\Http\Controllers\DiscountController;
 use App\Http\Controllers\FacilityController;
 use App\Http\Controllers\GuestController;
+use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\RoomImageController;
 use App\Http\Controllers\RoomMaintenanceController;
@@ -81,3 +82,9 @@ Route::get('/support-requests', [SupportRequestController::class, 'getSupportReq
 Route::get('/support-requests/{id}', [SupportRequestController::class, 'findSupportRequestById'])->whereNumber('id');
 Route::patch('/support-requests/{id}', [SupportRequestController::class, 'updateSupportRequest'])->whereNumber('id');
 Route::post('/guests/{id}/support-requests', [SupportRequestController::class, 'createSupportRequest'])->whereNumber('id');
+
+//CRUD Operations for Invoices
+Route::get('/invoices', [InvoiceController::class, 'getInvoices']);
+Route::get('/invoices/{id}', [InvoiceController::class, 'findInvoiceById'])->whereNumber('id');
+Route::patch('/invoices/{id}/status', [InvoiceController::class, 'updateInvoiceStatus'])->whereNumber('id');
+Route::post('/bookings/{id}/invoice', [InvoiceController::class, 'generateInvoice'])->whereNumber('id');

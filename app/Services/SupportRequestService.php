@@ -4,11 +4,13 @@ namespace App\Services;
 
 use App\Enums\BookingStatus;
 use App\Enums\SupportRequestStatus;
+use App\Mail\SupportRequestReceived;
 use App\Models\Guest;
 use App\Models\SupportRequest;
 use Carbon\CarbonInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Validation\ValidationException;
+use Mail;
 
 class SupportRequestService
 {
@@ -60,21 +62,17 @@ class SupportRequestService
 
     public function createSupportRequest(Guest $guest, array $data): SupportRequest
     {
-        $roomIds = $this->roomIdsOnDate($guest, today());
+        $roomId = $data['room_id'];
 
-        if (isset($data['room_id']) && ! in_array((int) $data['room_id'], $roomIds, true)) {
-            throw ValidationException::withMessages([
-                'room_id' => 'This guest is not currently staying in the selected room.',
-            ]);
-        }
-
-        $roomId = $data['room_id'] ?? (count($roomIds) === 1 ? $roomIds[0] : null);
-
-        return $guest->supportRequests()->create([
+        $supportRequest = $guest->supportRequests()->create([
             'room_id' => $roomId,
             'issue' => $data['issue'],
             'status' => SupportRequestStatus::Pending,
         ])->load(['guest', 'room']);
+
+        $this->sendSupportRequestRecieved($supportRequest);
+
+        return $supportRequest;
     }
 
     public function updateSupportRequest(SupportRequest $supportRequest, array $data): SupportRequest
@@ -127,5 +125,12 @@ class SupportRequestService
             ->unique()
             ->values()
             ->all();
+    }
+
+    private function sendSupportRequestRecieved(SupportRequest $supportRequest): void
+    {
+        Mail::to($supportRequest->guest->email)->send(
+            new SupportRequestReceived($supportRequest)
+        );
     }
 }

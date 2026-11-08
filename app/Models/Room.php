@@ -64,6 +64,11 @@ class Room extends Model
         return $this->hasMany(BookingRoom::class);
     }
 
+    public function supportRequests(): HasMany
+    {
+        return $this->hasMany(SupportRequest::class);
+    }
+
     public function reviews(): HasManyThrough
     {
         return $this->hasManyThrough(
