@@ -2,26 +2,23 @@
 
 namespace App\Notifications;
 
+use App\Enums\MaintenanceStatus;
+use App\Models\RoomMaintenance;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class MaintenanceReported extends Notification
+class MaintenanceReported extends Notification implements ShouldQueue
 {
     use Queueable;
 
-    /**
-     * Create a new notification instance.
-     */
-    public function __construct()
+    public function __construct(public RoomMaintenance $maintenance)
     {
-        //
+        $this->afterCommit();
     }
 
     /**
-     * Get the notification's delivery channels.
-     *
      * @return array<int, string>
      */
     public function via(object $notifiable): array
@@ -29,26 +26,24 @@ class MaintenanceReported extends Notification
         return ['mail'];
     }
 
-    /**
-     * Get the mail representation of the notification.
-     */
     public function toMail(object $notifiable): MailMessage
     {
+        $room = $this->maintenance->room;
+
         return (new MailMessage)
-            ->line('The introduction to the notification.')
-            ->action('Notification Action', url('/'))
-            ->line('Thank you for using our application!');
+            ->subject("New maintenance issue in room {$room->floor}{$room->room_number}")
+            ->greeting('Hello Manager,')
+            ->line("A new issue was reported in room **{$room->floor}{$room->room_number}**:")
+            ->line($this->maintenance->issue_description)
+            ->action('Open maintenance list', config('app.frontend_url').'/maintenances')
+            ->line('Please assign someone to fix it.');
     }
 
     /**
-     * Get the array representation of the notification.
-     *
-     * @return array<string, mixed>
+     * Only send if the issue is still pending when the worker runs.
      */
-    public function toArray(object $notifiable): array
+    public function shouldSend(object $notifiable, string $channel): bool
     {
-        return [
-            //
-        ];
+        return $this->maintenance->fresh()?->maintenance_status === MaintenanceStatus::Pending;
     }
 }

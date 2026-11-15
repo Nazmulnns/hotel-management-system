@@ -5,7 +5,9 @@ namespace App\Services;
 use App\Enums\MaintenanceStatus;
 use App\Models\Room;
 use App\Models\RoomMaintenance;
+use App\Notifications\MaintenanceReported;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Notification;
 
 class RoomMaintenanceService
 {
@@ -14,8 +16,10 @@ class RoomMaintenanceService
         $query = RoomMaintenance::query()->with('room');
 
         if (isset($filters['search'])) {
-            $query->whereLike('issue_description', "%{$filters['search']}%")
-                  ->orWhereLike('maintenance_status', "%{$filters['search']}%");
+            $query->where(function ($query) use ($filters) {
+                $query->whereLike('issue_description', "%{$filters['search']}%")
+                    ->orWhereLike('maintenance_status', "%{$filters['search']}%");
+            });
         }
 
         if (isset($filters['status'])) {
@@ -52,10 +56,15 @@ class RoomMaintenanceService
 
     public function reportMaintenance(Room $room, array $data): RoomMaintenance
     {
-        return $room->maintenances()->create([
+        $maintenance = $room->maintenances()->create([
             'issue_description' => $data['issue_description'],
             'maintenance_status' => MaintenanceStatus::Pending,
         ]);
+
+        Notification::route('mail', config('mail.manager_address'))
+        ->notify(new MaintenanceReported($maintenance));
+
+        return $maintenance;
     }
 
     public function updateMaintenance(RoomMaintenance $maintenance, array $data): RoomMaintenance

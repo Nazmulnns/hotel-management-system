@@ -31,6 +31,7 @@ class DatabaseSeeder extends Seeder
 
         if (! app()->isProduction()) {
             $this->call([
+                UserSeeder::class,
                 RoomSeeder::class,
                 GuestSeeder::class,
                 BookingSeeder::class,

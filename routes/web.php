@@ -3,7 +3,9 @@
 use App\Mail\ReviewRequest;
 use App\Mail\SupportRequestReceived;
 use App\Models\Booking;
+use App\Models\RoomMaintenance;
 use App\Models\SupportRequest;
+use App\Notifications\MaintenanceReported;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -19,3 +21,7 @@ Route::get('/mail-preview/review-request', fn () => new ReviewRequest(
 Route::get('/mail-preview/support-request', fn () => new SupportRequestReceived(
     SupportRequest::with(['guest', 'room'])->latest()->firstOrFail()
 ));
+
+Route::get('/notification-preview/maintenance', fn () => (new MaintenanceReported(
+    RoomMaintenance::with('room')->latest()->firstOrFail()
+))->toMail(null));
