@@ -31,3 +31,5 @@ Schedule::call(function () {
 Schedule::exec('node ' . base_path('scripts/clean-old-logs.js'))
     ->weekly()
     ->appendOutputTo(storage_path('logs/schedule.log'));
+
+Schedule::command('auth:clear-resets')->daily();

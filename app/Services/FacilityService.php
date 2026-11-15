@@ -3,12 +3,21 @@
 namespace App\Services;
 
 use App\Models\Facility;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Cache;
 
 class FacilityService
 {
-    public function getAll(): ?Facility
+    private const CACHE_KEY = 'facilities';
+
+    /**
+     * @return Collection<int, Facility>
+     */
+    public function getAll(): Collection
     {
-        return Facility::all();
+        $facilities = Cache::rememberForever(self::CACHE_KEY, fn () => Facility::all()->toArray());
+
+        return Facility::hydrate($facilities);
     }
 
     public function isFacilityNameExists(string $facilityName): bool
@@ -25,6 +34,9 @@ class FacilityService
     {
         $facility->facility_name = $newFacilityName;
         $facility->save();
+       
+        Cache::forget(self::CACHE_KEY);
+
         return $facility;
     }
 
@@ -33,12 +45,17 @@ class FacilityService
         $newFacility = new Facility();
         $newFacility->facility_name = $facilityName;
         $newFacility->save();
+               
+        Cache::forget(self::CACHE_KEY);
+
         return $newFacility;
     }
 
-    public function deleteFacility(Facility $facility): bool
+    public function deleteFacility(Facility $facility): void
     {
         $facility->rooms()->detach();
-        return $facility->delete();
+        $facility->delete();
+               
+        Cache::forget(self::CACHE_KEY);
     }
 }

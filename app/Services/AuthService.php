@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
 use Illuminate\Validation\ValidationException;
 
 class AuthService
@@ -38,5 +39,37 @@ class AuthService
     public function logout(User $user): void
     {
         $user->currentAccessToken()->delete();
+    }
+
+    public function sendPasswordResetLink(string $email): void
+    {
+        $status = Password::sendResetLink(['email' => $email, 'is_active' => true]);
+
+        if ($status === Password::ResetThrottled) {
+            throw ValidationException::withMessages([
+                'email' => 'Please wait before asking for another reset link.',
+            ]);
+        }
+    }
+
+    public function resetPassword(array $data): void
+    {
+        $status = Password::reset($data, function (User $user, string $password) {
+            $user->update(['password' => $password]);
+            $user->tokens()->delete();
+        });
+
+        if ($status !== Password::PasswordReset) {
+            throw ValidationException::withMessages([
+                'email' => 'This password reset link is invalid or has expired.',
+            ]);
+        }
+    }
+
+    public function changePassword(User $user, string $newPassword): void
+    {
+        $user->update(['password' => $newPassword]);
+
+        $user->tokens()->whereKeyNot($user->currentAccessToken()->id)->delete();
     }
 }

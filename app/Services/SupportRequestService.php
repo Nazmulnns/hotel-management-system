@@ -9,6 +9,7 @@ use App\Models\Guest;
 use App\Models\SupportRequest;
 use Carbon\CarbonInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\App;
 use Illuminate\Validation\ValidationException;
 use Mail;
 
@@ -129,7 +130,7 @@ class SupportRequestService
 
     private function sendSupportRequestRecieved(SupportRequest $supportRequest): void
     {
-        Mail::to($supportRequest->guest->email)->send(
+        Mail::to($supportRequest->guest->email)->locale(App::currentLocale())->send(
             new SupportRequestReceived($supportRequest)
         );
     }

@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Room;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
@@ -14,9 +15,10 @@ class RoomService
         $query = Room::with('images', 'maintenances', 'facilities', 'roomType');
 
         if (isset($filters['check_in'], $filters['check_out'])) {
-            $query->whereDoesntHave('bookingRooms.booking', function ($q) use ($filters) {
-                $q->where('check_in', '<', $filters['check_out'])->where('check_out', '>', $filters['check_in']);
-            });
+            $query->whereDoesntHave('bookings', fn ($bookingQuery) => $bookingQuery->overlapping(
+                Carbon::parse($filters['check_in']),
+                Carbon::parse($filters['check_out']),
+            ));
         }
 
         if (!empty($filters['room_type_ids'])) {
@@ -24,15 +26,12 @@ class RoomService
         }
 
         if (!empty($filters['facility_ids'])) {
-            foreach ($filters['facility_ids'] as $facilityId) {
-                $query->whereHas(
-                    'facilities',
-                    fn ($facilityQuery) => $facilityQuery->where(
-                        'facilities.id',
-                        $facilityId
-                    )
-                );
-            }
+            $query->whereHas(
+                'facilities',
+                fn ($facilityQuery) => $facilityQuery->whereIn('facilities.id', $filters['facility_ids']),
+                '=',
+                count($filters['facility_ids']),
+            );
         }
 
         if (isset($filters['min_price'])) {

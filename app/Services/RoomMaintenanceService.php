@@ -3,8 +3,10 @@
 namespace App\Services;
 
 use App\Enums\MaintenanceStatus;
+use App\Enums\UserRole;
 use App\Models\Room;
 use App\Models\RoomMaintenance;
+use App\Models\User;
 use App\Notifications\MaintenanceReported;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Notification;
@@ -61,8 +63,10 @@ class RoomMaintenanceService
             'maintenance_status' => MaintenanceStatus::Pending,
         ]);
 
-        Notification::route('mail', config('mail.manager_address'))
-        ->notify(new MaintenanceReported($maintenance));
+        Notification::send(
+            User::active()->withRole(UserRole::Manager)->get(),
+            new MaintenanceReported($maintenance),
+        );
 
         return $maintenance;
     }

@@ -5,10 +5,10 @@ namespace App\Mail;
 use App\Models\SupportRequest;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
-use Illuminate\Mail\Mailables\Attachment;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Str;
 
 class SupportRequestReceived extends Mailable
 {
@@ -28,13 +28,12 @@ class SupportRequestReceived extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'We received your request: ' . $this->supportRequest->issue,
-            );
+            subject: __('We received your request: :issue', [
+                'issue' => Str::limit($this->supportRequest->issue, 40),
+            ]),
+        );
     }
 
-    /**
-     * Get the message content definition.
-     */
     public function content(): Content
     {
         return new Content(
@@ -43,15 +42,5 @@ class SupportRequestReceived extends Mailable
                 'roomLabel' => "{$this->supportRequest->room->floor}{$this->supportRequest->room->room_number}",
             ]
         );
-    }
-
-    /**
-     * Get the attachments for the message.
-     *
-     * @return array<int, Attachment>
-     */
-    public function attachments(): array
-    {
-        return [];
     }
 }

@@ -1,0 +1,13 @@
+{
+    "Support request created successfully.": "সাপোর্ট রিকোয়েস্ট তৈরি হয়েছে।",
+    "Pending": "অপেক্ষমাণ",
+    "In progress": "চলমান",
+    "Resolved": "সমাধান হয়েছে",
+    "We received your request: :issue": "আপনার অনুরোধ পেয়েছি: :issue",
+    "We received your request": "আপনার অনুরোধ পেয়েছি",
+    "Dear :name,": "প্রিয় :name,",
+    "We hope you are enjoying your stay in room :room.": "আশা করি রুম :room এ আপনার সময় ভালো কাটছে।",
+    "We have received your request:": "আমরা আপনার অনুরোধ পেয়েছি:",
+    "Our team will look into it as soon as possible.": "আমাদের টিম যত দ্রুত সম্ভব বিষয়টি দেখবে।",
+    "Thanks,": "ধন্যবাদ,"
+}

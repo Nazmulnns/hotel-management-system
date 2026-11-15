@@ -10,6 +10,7 @@ use App\Models\Booking;
 use App\Services\InvoiceService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Support\Facades\Gate;
 
 class InvoiceController extends Controller
 {
@@ -52,6 +53,8 @@ class InvoiceController extends Controller
         }
 
         $newStatus = InvoiceStatus::from($request->validated('status'));
+       
+        Gate::authorize('updateStatus', [$invoice, $newStatus]);
 
         return (new InvoiceResource($this->invoiceService->updateInvoiceStatus($invoice, $newStatus)))
             ->additional(['message' => "Invoice is now {$newStatus->label()}."]);

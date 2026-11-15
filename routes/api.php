@@ -6,6 +6,7 @@ use App\Http\Controllers\DiscountController;
 use App\Http\Controllers\FacilityController;
 use App\Http\Controllers\GuestController;
 use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\RoomImageController;
@@ -21,10 +22,16 @@ no login needed
 */
 
 //Login
-Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:5,1');
+Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:5,1,login');
+
+//Password
+Route::middleware('throttle:5,1,password')->group(function () {
+    Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
+    Route::post('/reset-password', [AuthController::class, 'resetPassword']);
+});
 
 //Browse the hotel
-Route::middleware('throttle:60,1')->group(function () {
+Route::middleware('throttle:60,1,browse')->group(function () {
     Route::get('/facilities', [FacilityController::class, 'getAllFacilities']);
     Route::get('/room-types', [RoomTypeController::class, 'getAllRoomTypes']);
     Route::get('/rooms', [RoomController::class, 'getRooms']);
@@ -35,17 +42,18 @@ Route::middleware('throttle:60,1')->group(function () {
 });
 
 //Online booking form (step 1: guest, step 2: booking)
-Route::middleware('throttle:10,1')->group(function () {
+Route::middleware('throttle:10,1,booking')->group(function () {
     Route::post('/guests', [GuestController::class, 'createGuest']);
     Route::post('/bookings', [BookingController::class, 'createBooking']);
 });
-
 /*
 login needed
 */
 
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware(['auth:sanctum', 'active'])->group(function () {
 
+    //change password
+    Route::put('/me/password', [AuthController::class, 'changePassword']);
     //Every staff member
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/me', [AuthController::class, 'me']);
@@ -130,5 +138,14 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/discounts', [DiscountController::class, 'addNewDiscount']);
         Route::put('/discounts/{id}', [DiscountController::class, 'updateDiscount'])->whereNumber('id');
         Route::delete('/discounts/{id}', [DiscountController::class, 'deleteDiscountById'])->whereNumber('id');
+
+        //View Monthly report
+        Route::get('/reports/monthly-revenue', [ReportController::class, 'getMonthlyRevenue']);
+
+        //Get Room occupancy status from a date range
+        Route::get('/reports/room-occupancy', [ReportController::class, 'getRoomOccupancy']);
+
+        //year booking summary
+        Route::get('/reports/booking-nights', [ReportController::class, 'getBookingNights']);
     });
 });

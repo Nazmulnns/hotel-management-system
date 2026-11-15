@@ -1,18 +1,20 @@
 <x-mail::message>
-# We received your request
+# {{ __('We received your request') }}
 
-Dear {{ $supportRequest->guest->full_name }},
+{{ __('Dear :name,', ['name' => $supportRequest->guest->full_name]) }}
 
-We hope you are enjoying your stay in room **{{ $roomLabel }}**.
+@if ($roomLabel)
+{{ __('We hope you are enjoying your stay in room :room.', ['room' => $roomLabel]) }}
+@endif
 
-We have received your request:
+{{ __('We have received your request:') }}
 
 <x-mail::panel>
 {{ $supportRequest->issue }}
 </x-mail::panel>
 
-Our team will look into it as soon as possible.
+{{ __('Our team will look into it as soon as possible.') }}
 
-Thanks,<br>
+{{ __('Thanks,') }}<br>
 {{ config('app.name') }}
 </x-mail::message>

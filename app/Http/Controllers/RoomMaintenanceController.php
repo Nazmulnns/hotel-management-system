@@ -12,6 +12,7 @@ use App\Models\Room;
 use App\Services\RoomMaintenanceService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Support\Facades\Gate;
 
 class RoomMaintenanceController extends Controller
 {
@@ -63,6 +64,7 @@ class RoomMaintenanceController extends Controller
         if (empty($maintenance)) {
             return response()->json(['message' => "No maintenance record found with id {$id}"], 404);
         }
+        Gate::authorize('update', [$maintenance, $request->validated()]);
 
         return (new RoomMaintenanceResource($this->roomMaintenanceService->updateMaintenance($maintenance, $request->validated())))
             ->additional(['message' => 'Maintenance record updated successfully.']);
