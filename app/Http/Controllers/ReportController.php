@@ -17,7 +17,6 @@ class ReportController extends Controller
 
     public function getMonthlyRevenue(GetMonthlyRevenueRequest $request): AnonymousResourceCollection
     {
-        Gate::authorize('view-reports');
 
         $year = (int) $request->validated('year', now()->year);
 

@@ -9,12 +9,13 @@ use Illuminate\Validation\ValidationException;
 
 class AuthService
 {
+    public function __construct(private UserService $userService) {}
     /**
      * @return array{user: User, token: string}
      */
     public function login(string $email, string $password, string $deviceName): array
     {
-        $user = User::where('email', $email)->first();
+        $user = $this->userService->findUserByEmail($email);
 
         if (! $user || ! Hash::check($password, $user->password)) {
             throw ValidationException::withMessages([
