@@ -11,6 +11,7 @@ class Feedback extends Model
     use HasFactory;
 
     protected $table = 'feedback';
+
     protected $fillable = ['guest_id', 'booking_id', 'message'];
 
     public function guest(): BelongsTo

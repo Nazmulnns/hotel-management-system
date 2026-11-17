@@ -35,7 +35,7 @@ class MaintenanceReported extends Notification implements ShouldQueue
             ->greeting('Hello Manager,')
             ->line("A new issue was reported in room **{$room->floor}{$room->room_number}**:")
             ->line($this->maintenance->issue_description)
-            ->action('Open maintenance list', config('app.frontend_url') . '/maintenances')
+            ->action('Open maintenance list', config('app.frontend_url').'/maintenances')
             ->line('Please assign someone to fix it.');
     }
 

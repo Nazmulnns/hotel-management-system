@@ -12,7 +12,6 @@ use PHPUnit\Framework\TestCase;
 
 class InvoicePolicyTest extends TestCase
 {
-
     private InvoicePolicy $policy;
 
     private Invoice $invoice;
@@ -21,7 +20,7 @@ class InvoicePolicyTest extends TestCase
     {
         parent::setUp();
 
-        $this->policy = new InvoicePolicy();
+        $this->policy = new InvoicePolicy;
         $this->invoice = new Invoice(['status' => InvoiceStatus::Issued]);
     }
 
@@ -41,7 +40,7 @@ class InvoicePolicyTest extends TestCase
         ];
     }
 
-    public function test_before_allows_manager_every_abilit(): void 
+    public function test_before_allows_manager_every_abilit(): void
     {
         $manager = $this->userWithRole(UserRole::Manager);
 
@@ -55,7 +54,7 @@ class InvoicePolicyTest extends TestCase
         $this->assertSame($expected, $this->policy->viewAny($this->userWithRole($role)));
     }
 
-        #[DataProvider('rolesThatCanViewAndCreate')]
+    #[DataProvider('rolesThatCanViewAndCreate')]
     public function test_view(UserRole $role, bool $expected): void
     {
         $this->assertSame($expected, $this->policy->view($this->userWithRole($role), $this->invoice));
@@ -97,5 +96,4 @@ class InvoicePolicyTest extends TestCase
         $this->assertTrue($response->denied());
         $this->assertSame('You cannot change invoice status.', $response->message());
     }
-
 }

@@ -5,9 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\GetGuestRequest;
 use App\Http\Requests\StoreGuestRequest;
 use App\Http\Resources\GuestResource;
-use App\Models\Guest;
 use App\Services\GuestService;
-use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class GuestController extends Controller
@@ -35,6 +33,7 @@ class GuestController extends Controller
     public function createGuest(StoreGuestRequest $request): GuestResource
     {
         $request = $request->validated();
-        return (new GuestResource($this->guestService->createGuest($request))) ->additional(['message' => 'Guest added successfully.']);
+
+        return (new GuestResource($this->guestService->createGuest($request)))->additional(['message' => 'Guest added successfully.']);
     }
 }

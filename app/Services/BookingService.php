@@ -14,14 +14,13 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Mail;
-use function Illuminate\Support\minutes;
 
 class BookingService
 {
     public function getBookings(?array $filters): LengthAwarePaginator
     {
         $query = Booking::query()->with(['guest', 'rooms.roomType']);
-       
+
         if (isset($filters['search'])) {
             $search = $filters['search'];
             $query->where(function ($query) use ($search) {
@@ -53,21 +52,22 @@ class BookingService
 
         if (isset($filters['staying_on'])) {
             $query->whereDate('check_in', '<=', $filters['staying_on'])
-            ->whereDate('check_out', '>', $filters['staying_on'])
-            ->whereNotIn('status', [BookingStatus::Cancelled, BookingStatus::CheckedOut]);;
+                ->whereDate('check_out', '>', $filters['staying_on'])
+                ->whereNotIn('status', [BookingStatus::Cancelled, BookingStatus::CheckedOut]);
         }
 
         return $query
-                ->orderBy($filters['sort_by'] ?? 'check_in', $filters['sort_order'] ?? 'desc')
-                ->orderBy('id')
-                ->paginate($filters['per_page'] ?? 10)
-                ->withQueryString();
+            ->orderBy($filters['sort_by'] ?? 'check_in', $filters['sort_order'] ?? 'desc')
+            ->orderBy('id')
+            ->paginate($filters['per_page'] ?? 10)
+            ->withQueryString();
     }
 
     public function findBookingById(int $id): ?Booking
     {
         return Booking::with(['guest', 'rooms.roomType'])->find($id);
     }
+
     public function updateStatus(Booking $booking, BookingStatus $newStatus): Booking
     {
         if ($newStatus === BookingStatus::CheckedIn && $booking->check_in->isFuture()) {
@@ -154,7 +154,7 @@ class BookingService
     private function generateReference(): string
     {
         do {
-            $reference = 'BK-' . now()->format('Ymd') . '-' . Str::upper(Str::random(4));
+            $reference = 'BK-'.now()->format('Ymd').'-'.Str::upper(Str::random(4));
         } while (Booking::where('reference', $reference)->exists());
 
         return $reference;
@@ -162,9 +162,9 @@ class BookingService
 
     private function sendReviewRequest(Booking $booking): void
     {
-       /* if ($booking->reviews()->exists()) {
-            return;
-        }*/
+        /* if ($booking->reviews()->exists()) {
+             return;
+         }*/
 
         Mail::to($booking->guest->email)->later(
             now()->plus(minutes: 1),

@@ -34,7 +34,7 @@ class PaymentFactory extends Factory
             'payment_method' => fake()->randomElement(['cash', 'card', 'bkash', 'nagad', 'bank_transfer']),
             'status' => 'checked',
             'transaction_id' => fn (array $attributes) => $attributes['payment_method'] === 'cash'
-                ? 'CASH-' . fake()->unique()->numerify('########')
+                ? 'CASH-'.fake()->unique()->numerify('########')
                 : strtoupper(fake()->unique()->bothify('TXN##??##??##')),
         ];
     }

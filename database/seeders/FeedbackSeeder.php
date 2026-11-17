@@ -14,12 +14,12 @@ class FeedbackSeeder extends Seeder
     public function run(): void
     {
         Booking::where('status', 'checked_out')
-                ->doesntHave('feedbacks')
-                ->get()
-                ->each(function (Booking $booking): void {
-                    if (fake()->boolean(60)) {
-                        Feedback::factory()->for($booking)->create();
-                    }
-                });
+            ->doesntHave('feedbacks')
+            ->get()
+            ->each(function (Booking $booking): void {
+                if (fake()->boolean(60)) {
+                    Feedback::factory()->for($booking)->create();
+                }
+            });
     }
 }

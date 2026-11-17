@@ -13,6 +13,7 @@ class Discount extends Model
     use SoftDeletes;
 
     public $timestamps = false;
+
     protected $fillable = ['discount_code', 'percentage', 'expiry_date'];
 
     protected function casts(): array

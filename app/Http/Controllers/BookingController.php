@@ -13,9 +13,7 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class BookingController extends Controller
 {
-    public function __construct(private BookingService $bookingService) 
-    {
-    }
+    public function __construct(private BookingService $bookingService) {}
 
     public function getBookings(GetBookingsRequest $request): AnonymousResourceCollection
     {

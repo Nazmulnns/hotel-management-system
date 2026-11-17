@@ -10,6 +10,7 @@ use Illuminate\Validation\ValidationException;
 class AuthService
 {
     public function __construct(private UserService $userService) {}
+
     /**
      * @return array{user: User, token: string}
      */
@@ -23,7 +24,7 @@ class AuthService
             ]);
         }
 
-        if (!$user->is_active) {
+        if (! $user->is_active) {
             throw ValidationException::withMessages([
                 'email' => 'This account has been deactivated.',
             ]);

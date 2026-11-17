@@ -17,7 +17,7 @@ use Illuminate\Support\Carbon;
  * @property Carbon $booking_date
  * @property Carbon $check_in
  * @property Carbon $check_out
- * @property \App\Enums\BookingStatus $status
+ * @property BookingStatus $status
  */
 class Booking extends Model
 {

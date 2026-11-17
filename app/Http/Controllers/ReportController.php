@@ -9,7 +9,6 @@ use App\Http\Resources\MonthlyRevenueResource;
 use App\Http\Resources\RoomOccupancyResource;
 use App\Services\ReportService;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
-use Illuminate\Support\Facades\Gate;
 
 class ReportController extends Controller
 {

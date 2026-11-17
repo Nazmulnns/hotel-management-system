@@ -8,18 +8,16 @@ use App\Http\Requests\UpdateDiscountRequest;
 use App\Http\Resources\DiscountResource;
 use App\Services\DiscountService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class DiscountController extends Controller
 {
-    public function __construct(private DiscountService $discountService)
-    {
-    }
+    public function __construct(private DiscountService $discountService) {}
 
     public function getDiscounts(GetDiscountsRequest $request): AnonymousResourceCollection
     {
         $request = $request->validated();
+
         return DiscountResource::collection($this->discountService->getDiscounts($request));
     }
 
@@ -36,9 +34,9 @@ class DiscountController extends Controller
     public function addNewDiscount(StoreDiscountRequest $request): DiscountResource|JsonResponse
     {
         $request = $request->validated();
-        
+
         return (new DiscountResource($this->discountService->addNewDiscount($request)))
-                ->additional(['message' => "Discount added successfully."]);
+            ->additional(['message' => 'Discount added successfully.']);
     }
 
     public function updateDiscount(int $id, UpdateDiscountRequest $request): DiscountResource|JsonResponse
@@ -50,7 +48,7 @@ class DiscountController extends Controller
         }
 
         return (new DiscountResource($this->discountService->updateDiscount($discount, $request)))
-            ->additional(['message' => "Discount updated successfully."]);
+            ->additional(['message' => 'Discount updated successfully.']);
     }
 
     public function deleteDiscountById(int $id): JsonResponse
@@ -61,7 +59,7 @@ class DiscountController extends Controller
         }
 
         $this->discountService->deleteDiscount($discount);
-        
+
         return response()->json(['message' => "Discount with id {$id} deleted Successfully"], 404);
     }
 }

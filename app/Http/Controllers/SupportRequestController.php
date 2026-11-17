@@ -9,14 +9,11 @@ use App\Http\Resources\SupportRequestResource;
 use App\Models\Guest;
 use App\Services\SupportRequestService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class SupportRequestController extends Controller
 {
-    public function __construct(private SupportRequestService $supportRequestService) 
-    {
-    }
+    public function __construct(private SupportRequestService $supportRequestService) {}
 
     public function getSupportRequests(GetSupportRequestsRequest $request): AnonymousResourceCollection
     {

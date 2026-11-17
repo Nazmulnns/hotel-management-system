@@ -14,7 +14,7 @@ Artisan::command('inspire', function () {
 Schedule::command('inspire')->everyMinute()->appendOutputTo(storage_path('logs/schedule.log'));
 Schedule::command('maintenances:send-weekly-report')->weeklyOn(0, '09:00');
 
-Schedule::job(new CancelExpiredPendingBookings())->hourly();
+Schedule::job(new CancelExpiredPendingBookings)->hourly();
 
 Schedule::call(function () {
     $checkIns = Booking::whereDate('check_in', today())
@@ -28,7 +28,7 @@ Schedule::call(function () {
     Log::info("Front desk today: {$checkIns} check-in(s), {$checkOuts} check-out(s).");
 })->name('front-desk-summary')->dailyAt('07:00');
 
-Schedule::exec('node ' . base_path('scripts/clean-old-logs.js'))
+Schedule::exec('node '.base_path('scripts/clean-old-logs.js'))
     ->weekly()
     ->appendOutputTo(storage_path('logs/schedule.log'));
 

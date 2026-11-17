@@ -12,9 +12,7 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class ReviewController extends Controller
 {
-    public function __construct(private ReviewService $reviewService) 
-    {
-    }
+    public function __construct(private ReviewService $reviewService) {}
 
     public function getReviews(GetReviewsRequest $request): AnonymousResourceCollection
     {

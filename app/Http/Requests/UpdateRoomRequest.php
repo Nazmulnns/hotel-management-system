@@ -23,7 +23,8 @@ class UpdateRoomRequest extends FormRequest
     {
         return $this->roomToUpdate ??= Room::findOrFail($this->route('id'));
     }
-        /**
+
+    /**
      * Get the validation rules that apply to the request.
      *
      * @return array<string, ValidationRule|array<mixed>|string>

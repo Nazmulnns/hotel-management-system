@@ -19,6 +19,7 @@ class RoomFactory extends Factory
     public function definition(): array
     {
         [$floor, $roomNumber] = fake()->unique()->randomElement($this->possibleRooms());
+
         return [
             'floor' => $floor,
             'room_number' => $roomNumber,

@@ -29,6 +29,7 @@ class ServiceService
     public function updateService(Service $service, ?array $data): ?Service
     {
         $service->update($data);
+
         return $service;
     }
 

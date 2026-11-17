@@ -21,16 +21,16 @@ use Illuminate\Support\Facades\Route;
 no login needed
 */
 
-//Login
+// Login
 Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:5,1,login');
 
-//Password
+// Password
 Route::middleware('throttle:5,1,password')->group(function () {
     Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
     Route::post('/reset-password', [AuthController::class, 'resetPassword']);
 });
 
-//Browse the hotel
+// Browse the hotel
 Route::middleware('throttle:60,1,browse')->group(function () {
     Route::get('/facilities', [FacilityController::class, 'getAllFacilities']);
     Route::get('/room-types', [RoomTypeController::class, 'getAllRoomTypes']);
@@ -41,7 +41,7 @@ Route::middleware('throttle:60,1,browse')->group(function () {
     Route::get('/reviews', [ReviewController::class, 'getReviews']);
 });
 
-//Online booking form (step 1: guest, step 2: booking)
+// Online booking form (step 1: guest, step 2: booking)
 Route::middleware('throttle:10,1,booking')->group(function () {
     Route::post('/guests', [GuestController::class, 'createGuest']);
     Route::post('/bookings', [BookingController::class, 'createBooking']);
@@ -52,57 +52,57 @@ login needed
 
 Route::middleware(['auth:sanctum', 'active'])->group(function () {
 
-    //change password
+    // change password
     Route::put('/me/password', [AuthController::class, 'changePassword']);
-    //Every staff member
+    // Every staff member
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/me', [AuthController::class, 'me']);
 
-    //Room Maintenances: see and report
+    // Room Maintenances: see and report
     Route::get('/room-maintenances', [RoomMaintenanceController::class, 'getMaintenances']);
     Route::get('/room-maintenances/{id}', [RoomMaintenanceController::class, 'findMaintenanceById'])->whereNumber('id');
     Route::get('/rooms/{id}/maintenances', [RoomMaintenanceController::class, 'getRoomMaintenances'])->whereNumber('id');
     Route::post('/rooms/{id}/maintenances', [RoomMaintenanceController::class, 'reportMaintenance'])->whereNumber('id');
 
-    //Support Requests: see and update
+    // Support Requests: see and update
     Route::get('/support-requests', [SupportRequestController::class, 'getSupportRequests']);
     Route::get('/support-requests/{id}', [SupportRequestController::class, 'findSupportRequestById'])->whereNumber('id');
     Route::patch('/support-requests/{id}', [SupportRequestController::class, 'updateSupportRequest'])->whereNumber('id');
 
-    //Manager and Receptionist: front desk
+    // Manager and Receptionist: front desk
     Route::middleware('role:manager,receptionist')->group(function () {
-        //Guests
+        // Guests
         Route::get('/guests', [GuestController::class, 'getGuests']);
         Route::get('/guests/{id}', [GuestController::class, 'findGuestById'])->whereNumber('id');
         Route::post('/guests/{id}/support-requests', [SupportRequestController::class, 'createSupportRequest'])->whereNumber('id');
 
-        //Bookings
+        // Bookings
         Route::get('/bookings', [BookingController::class, 'getBookings']);
         Route::get('/bookings/{id}', [BookingController::class, 'findBookingById'])->whereNumber('id');
         Route::patch('/bookings/{id}/status', [BookingController::class, 'updateBookingStatus'])->whereNumber('id');
 
-        //Reviews
+        // Reviews
         Route::post('/bookings/{id}/review', [ReviewController::class, 'addReview'])->whereNumber('id');
 
-        //Discounts: see only
+        // Discounts: see only
         Route::get('/discounts', [DiscountController::class, 'getDiscounts']);
         Route::get('/discounts/{id}', [DiscountController::class, 'findDiscountById'])->whereNumber('id');
 
-        //Invoices
+        // Invoices
         Route::get('/invoices', [InvoiceController::class, 'getInvoices']);
         Route::get('/invoices/{id}', [InvoiceController::class, 'findInvoiceById'])->whereNumber('id');
         Route::post('/bookings/{id}/invoice', [InvoiceController::class, 'generateInvoice'])->whereNumber('id');
         Route::patch('/invoices/{id}/status', [InvoiceController::class, 'updateInvoiceStatus'])->whereNumber('id');
     });
 
-    //Manager and Housekeeping: fix rooms
+    // Manager and Housekeeping: fix rooms
     Route::middleware('role:manager,housekeeping')->group(function () {
         Route::put('/room-maintenances/{id}', [RoomMaintenanceController::class, 'updateMaintenance'])->whereNumber('id');
     });
 
-    //Manager only
+    // Manager only
     Route::middleware('role:manager')->group(function () {
-        //Users
+        // Users
         Route::get('/users', [UserController::class, 'getUsers']);
         Route::get('/users/{id}', [UserController::class, 'findUserById'])->whereNumber('id');
         Route::post('/users', [UserController::class, 'createUser']);
@@ -110,42 +110,42 @@ Route::middleware(['auth:sanctum', 'active'])->group(function () {
         Route::patch('/users/{id}/deactivate', [UserController::class, 'deactivateUser'])->whereNumber('id');
         Route::patch('/users/{id}/activate', [UserController::class, 'activateUser'])->whereNumber('id');
 
-        //Facilities
+        // Facilities
         Route::post('/facilities', [FacilityController::class, 'addNewFacility']);
         Route::put('/facilities/{id}', [FacilityController::class, 'updateFacility']);
         Route::delete('/facilities/{facilityId}', [FacilityController::class, 'deleteFacilityById']);
 
-        //Room Types
+        // Room Types
         Route::post('/room-types', [RoomTypeController::class, 'addNewRoomType']);
         Route::put('/room-types/{id}', [RoomTypeController::class, 'updateRoomType']);
         Route::delete('/room-types/{id}', [RoomTypeController::class, 'deleteRoomTypeById']);
 
-        //Rooms
+        // Rooms
         Route::post('/rooms', [RoomController::class, 'createRoom']);
         Route::put('/rooms/{id}', [RoomController::class, 'updateRoom']);
         Route::delete('/rooms/{id}', [RoomController::class, 'deleteRoom']);
 
-        //Room Images
+        // Room Images
         Route::post('/rooms/{id}/images', [RoomImageController::class, 'addNewRoomImages']);
         Route::delete('/room-images/{id}', [RoomImageController::class, 'deleteRoomImageById']);
 
-        //Services
+        // Services
         Route::post('/services', [ServiceController::class, 'createNewService']);
         Route::put('/services/{id}', [ServiceController::class, 'updateService']);
         Route::delete('/services/{id}', [ServiceController::class, 'deleteService']);
 
-        //Discounts
+        // Discounts
         Route::post('/discounts', [DiscountController::class, 'addNewDiscount']);
         Route::put('/discounts/{id}', [DiscountController::class, 'updateDiscount'])->whereNumber('id');
         Route::delete('/discounts/{id}', [DiscountController::class, 'deleteDiscountById'])->whereNumber('id');
 
-        //View Monthly report
+        // View Monthly report
         Route::get('/reports/monthly-revenue', [ReportController::class, 'getMonthlyRevenue']);
 
-        //Get Room occupancy status from a date range
+        // Get Room occupancy status from a date range
         Route::get('/reports/room-occupancy', [ReportController::class, 'getRoomOccupancy']);
 
-        //year booking summary
+        // year booking summary
         Route::get('/reports/booking-nights', [ReportController::class, 'getBookingNights']);
     });
 });

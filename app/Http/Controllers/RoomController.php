@@ -24,7 +24,7 @@ class RoomController extends Controller
         $filters = $request->validated();
         $rooms = $this->roomService->getAllRooms($filters);
 
-        return RoomResource::collection($rooms)->additional(['message' => "Rooms retrived successfully."]);
+        return RoomResource::collection($rooms)->additional(['message' => 'Rooms retrived successfully.']);
     }
 
     public function findRoomById(int $id): RoomResource|JsonResponse
@@ -42,7 +42,7 @@ class RoomController extends Controller
         $request = $request->validated();
         $room = $this->roomService->createNewRoom($request);
 
-        return (new RoomResource($room))->additional(['message' => "New Room Added Successfully"]);
+        return (new RoomResource($room))->additional(['message' => 'New Room Added Successfully']);
     }
 
     public function updateRoom(int $id, UpdateRoomRequest $request): RoomResource|JsonResponse
@@ -55,7 +55,7 @@ class RoomController extends Controller
 
         $updatedRoom = $this->roomService->updateRoom($room, $request);
 
-        return (new RoomResource($updatedRoom))->additional(["message" => "Room updated successfully"]);
+        return (new RoomResource($updatedRoom))->additional(['message' => 'Room updated successfully']);
     }
 
     public function deleteRoom(int $id): JsonResponse

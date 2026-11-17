@@ -34,7 +34,7 @@ class FacilityService
     {
         $facility->facility_name = $newFacilityName;
         $facility->save();
-       
+
         Cache::forget(self::CACHE_KEY);
 
         return $facility;
@@ -42,10 +42,10 @@ class FacilityService
 
     public function addNewFacility(string $facilityName)
     {
-        $newFacility = new Facility();
+        $newFacility = new Facility;
         $newFacility->facility_name = $facilityName;
         $newFacility->save();
-               
+
         Cache::forget(self::CACHE_KEY);
 
         return $newFacility;
@@ -55,7 +55,7 @@ class FacilityService
     {
         $facility->rooms()->detach();
         $facility->delete();
-               
+
         Cache::forget(self::CACHE_KEY);
     }
 }

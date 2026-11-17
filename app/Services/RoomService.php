@@ -21,11 +21,11 @@ class RoomService
             ));
         }
 
-        if (!empty($filters['room_type_ids'])) {
+        if (! empty($filters['room_type_ids'])) {
             $query->whereIn('room_type_id', $filters['room_type_ids']);
         }
 
-        if (!empty($filters['facility_ids'])) {
+        if (! empty($filters['facility_ids'])) {
             $query->whereHas(
                 'facilities',
                 fn ($facilityQuery) => $facilityQuery->whereIn('facilities.id', $filters['facility_ids']),
@@ -60,9 +60,9 @@ class RoomService
             'bookings' => fn ($query) => $query->upcoming(),
             'reviews' => fn ($query) => $query->with('guest:id,full_name')->latest()->limit(5),
         ])
-        ->withCount('reviews')
-        ->withAvg('reviews', 'rating')
-        ->find($id);
+            ->withCount('reviews')
+            ->withAvg('reviews', 'rating')
+            ->find($id);
     }
 
     public function createNewRoom(array $data): Room
@@ -70,6 +70,7 @@ class RoomService
         return DB::transaction(function () use ($data) {
             $room = Room::create($data);
             $room->facilities()->sync($data['facility_ids'] ?? []);
+
             return $room->load('roomType', 'facilities');
         });
     }
@@ -79,6 +80,7 @@ class RoomService
         return DB::transaction(function () use ($room, $data) {
             $room->update($data);
             $room->facilities()->sync($data['facility_ids'] ?? []);
+
             return $room->load('roomType', 'facilities');
         });
     }

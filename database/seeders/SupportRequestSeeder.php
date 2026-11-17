@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\Booking;
-use App\Models\Guest;
 use App\Models\SupportRequest;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;

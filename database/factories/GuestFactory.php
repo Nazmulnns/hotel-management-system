@@ -20,14 +20,14 @@ class GuestFactory extends Factory
         return [
             'full_name' => fake()->name(),
             'email' => fake()->safeEmail(),
-            'phone_number' => '01' . fake()->numberBetween(3, 9) . fake()->unique()->numerify('########'),
+            'phone_number' => '01'.fake()->numberBetween(3, 9).fake()->unique()->numerify('########'),
             'identity_number' => fake()->unique()->numerify('###########'),
-            'identity_front_image' => 'guests/identity/' . fake()->uuid() . '-front.jpg',
-            'identity_back_image' => 'guests/identity/' . fake()->uuid() . '-back.jpg',
+            'identity_front_image' => 'guests/identity/'.fake()->uuid().'-front.jpg',
+            'identity_back_image' => 'guests/identity/'.fake()->uuid().'-back.jpg',
             'date_of_birth' => fake()->dateTimeBetween('-75 years', '-18 years'),
             'nationality' => fake()->randomElement(['Bangladeshi', 'Bangladeshi', 'Bangladeshi', 'Nepali', 'Indian', 'American', 'Pakistani']),
             'address' => fake()->address(),
-            'guest_photo' => 'guest/photo/' . fake()->uuid() . '.jpg',
+            'guest_photo' => 'guest/photo/'.fake()->uuid().'.jpg',
         ];
     }
 }

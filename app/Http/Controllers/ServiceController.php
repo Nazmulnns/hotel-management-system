@@ -7,14 +7,11 @@ use App\Http\Requests\UpdateServiceRequest;
 use App\Http\Resources\ServiceResource;
 use App\Services\ServiceService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class ServiceController extends Controller
 {
-    public function __construct(private ServiceService $serviceService)
-    {
-    }
+    public function __construct(private ServiceService $serviceService) {}
 
     public function getServices(): AnonymousResourceCollection
     {
@@ -35,8 +32,9 @@ class ServiceController extends Controller
     public function createNewService(StoreServiceRequest $request): ServiceResource
     {
         $request = $request->validated();
+
         return (new ServiceResource($this->serviceService->createNewService($request)))
-                    ->additional(['message' => "New Service added successfully"]);
+            ->additional(['message' => 'New Service added successfully']);
     }
 
     public function updateService(int $id, UpdateServiceRequest $request): ServiceResource|JsonResponse
@@ -49,7 +47,7 @@ class ServiceController extends Controller
         }
 
         return (new ServiceResource($this->serviceService->updateService($service, $request)))
-                    ->additional(['message' => "Service Updated Successfully"]);
+            ->additional(['message' => 'Service Updated Successfully']);
     }
 
     public function deleteService(int $id): JsonResponse
@@ -61,7 +59,7 @@ class ServiceController extends Controller
         }
 
         $this->serviceService->delete($service);
+
         return response()->json(['message' => "Service deleted successfully with id {$id}"]);
     }
-
 }

@@ -19,9 +19,7 @@ class ReviewRequest extends Mailable implements ShouldQueue
     /**
      * Create a new message instance.
      */
-    public function __construct(public Booking $booking)
-    {
-    }
+    public function __construct(public Booking $booking) {}
 
     /**
      * Get the message envelope.
@@ -42,7 +40,7 @@ class ReviewRequest extends Mailable implements ShouldQueue
             markdown: 'mail.reviews.request',
             with: [
                 'nights' => (int) $this->booking->check_in->diffInDays($this->booking->check_out),
-                'reviewUrl' => config('app.frontend_url')."/bookings/{$this->booking->reference}/review",]
+                'reviewUrl' => config('app.frontend_url')."/bookings/{$this->booking->reference}/review", ]
         );
     }
 

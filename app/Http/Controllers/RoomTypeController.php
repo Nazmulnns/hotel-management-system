@@ -21,6 +21,7 @@ class RoomTypeController extends Controller
     public function getAllRoomTypes(): AnonymousResourceCollection
     {
         $roomTypes = $this->roomTypeService->getAllRoomTypes();
+
         return RoomTypeResource::collection($roomTypes);
     }
 
@@ -36,10 +37,11 @@ class RoomTypeController extends Controller
             }
 
             $updatedRoomType = $this->roomTypeService->updateRoomTypeById($roomType, $request->name, $request->description);
+
             return (new RoomTypeResource($updatedRoomType))
                 ->additional(['message' => "Room Type {$roomTypeId} Updated Successfully"]);
         } catch (Exception $e) {
-            return response()->json(['message' => "Something went wrong"]);
+            return response()->json(['message' => 'Something went wrong']);
         }
     }
 
@@ -53,9 +55,10 @@ class RoomTypeController extends Controller
             }
 
             $roomType = $this->roomTypeService->addNewRoomType($newRoomTypeName, $request->description);
+
             return (new RoomTypeResource($roomType))->additional(['message' => "Room Type {$newRoomTypeName} is successfully added"]);
         } catch (Exception $e) {
-            return response()->json(['message' => "Something went wrong"]);
+            return response()->json(['message' => 'Something went wrong']);
         }
     }
 
@@ -68,12 +71,13 @@ class RoomTypeController extends Controller
             }
 
             $isDeleted = $this->roomTypeService->deleteRoomType($roomType);
-            if (!$isDeleted) {
+            if (! $isDeleted) {
                 return response()->json([
                     'message' => "Cannot delete '{$roomType->name}' because rooms are assigned to this room type.
-                    Please change the room type of those rooms before deleting it."
+                    Please change the room type of those rooms before deleting it.",
                 ], 409);
             }
+
             return response()->json(['message' => "Room Type {$roomType->name} is deleted successfully"], 200);
         } catch (Exception $e) {
             return response()->json(['message' => "Something went wrong {$e}"], 500);

@@ -5,7 +5,6 @@ namespace Tests\Feature;
 use App\Models\User;
 use App\Services\AuthService;
 use App\Services\UserService;
-use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
@@ -43,7 +42,6 @@ class AuthServiceTest extends TestCase
 
         return $user;
     }
-
 
     public function test_login_returns_the_user_and_the_new_token(): void
     {

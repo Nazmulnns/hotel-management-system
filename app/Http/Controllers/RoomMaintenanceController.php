@@ -3,10 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\GetMaintenanceStatusRequest;
-use App\Http\Requests\GetRoomMaintenancesRequest;
 use App\Http\Requests\StoreRoomMaintenanceRequest;
 use App\Http\Requests\UpdateMaintenanceStatusRequest;
-use App\Http\Requests\UpdateRoomMaintenanceRequest;
 use App\Http\Resources\RoomMaintenanceResource;
 use App\Models\Room;
 use App\Services\RoomMaintenanceService;

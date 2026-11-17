@@ -53,7 +53,7 @@ class InvoiceController extends Controller
         }
 
         $newStatus = InvoiceStatus::from($request->validated('status'));
-       
+
         Gate::authorize('updateStatus', [$invoice, $newStatus]);
 
         return (new InvoiceResource($this->invoiceService->updateInvoiceStatus($invoice, $newStatus)))

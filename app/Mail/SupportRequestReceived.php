@@ -18,9 +18,7 @@ class SupportRequestReceived extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct(public SupportRequest $supportRequest)
-    {
-    }
+    public function __construct(public SupportRequest $supportRequest) {}
 
     /**
      * Get the message envelope.

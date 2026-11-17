@@ -23,7 +23,7 @@ class StoreDiscountRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'discount_code' => ['unique:discounts,discount_code','required', 'string', 'alpha_dash', 'max:50'],
+            'discount_code' => ['unique:discounts,discount_code', 'required', 'string', 'alpha_dash', 'max:50'],
             'percentage' => ['required', 'numeric', 'decimal:0,2', 'min:1', 'max:50'],
             'expiry_date' => ['required', 'date', 'after_or_equal:today'],
         ];

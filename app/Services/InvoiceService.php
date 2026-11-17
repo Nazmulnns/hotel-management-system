@@ -74,7 +74,7 @@ class InvoiceService
 
         return DB::transaction(function () use ($booking) {
             $invoice = $booking->invoice()->create([
-                'invoice_number' => 'INV-' . str_pad((string) $booking->id, 6, '0', STR_PAD_LEFT),
+                'invoice_number' => 'INV-'.str_pad((string) $booking->id, 6, '0', STR_PAD_LEFT),
                 'issue_date' => today(),
                 'due_date' => today()->addDays(self::DAYS_TO_PAY),
                 'status' => InvoiceStatus::Issued,

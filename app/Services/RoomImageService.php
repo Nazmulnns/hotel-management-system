@@ -10,7 +10,6 @@ use Throwable;
 
 class RoomImageService
 {
-
     public function addImages(Room $room, array $images): Collection
     {
         $paths = [];
@@ -32,6 +31,7 @@ class RoomImageService
     {
         return RoomImage::find($id);
     }
+
     public function deleteImage(RoomImage $image): void
     {
 

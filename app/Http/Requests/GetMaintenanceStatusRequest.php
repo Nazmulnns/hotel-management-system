@@ -51,5 +51,4 @@ class GetMaintenanceStatusRequest extends FormRequest
             'to.after_or_equal' => 'The end date must be the same as or after the start date.',
         ];
     }
-
 }

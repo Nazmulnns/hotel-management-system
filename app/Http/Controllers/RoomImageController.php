@@ -7,12 +7,12 @@ use App\Http\Resources\RoomImageResource;
 use App\Models\Room;
 use App\Services\RoomImageService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class RoomImageController extends Controller
 {
     private RoomImageService $roomImageServie;
+
     public function __construct(RoomImageService $roomImageService)
     {
         $this->roomImageServie = $roomImageService;
@@ -22,10 +22,11 @@ class RoomImageController extends Controller
     {
         $room = Room::find($id);
         if (empty($room)) {
-            return response()->json(["message" => "No room exists with id {$id}"]);
+            return response()->json(['message' => "No room exists with id {$id}"]);
         }
 
         $images = $this->roomImageServie->addImages($room, $request->file('images'));
+
         return RoomImageResource::collection($images)
             ->additional(['message' => 'Images uploaded successfully.'])
             ->response()
@@ -36,10 +37,11 @@ class RoomImageController extends Controller
     {
         $image = $this->roomImageServie->findImageById($id);
         if (empty($image)) {
-            return response()->json(["message" => "No image exists with id {$id}"]);
+            return response()->json(['message' => "No image exists with id {$id}"]);
         }
 
         $this->roomImageServie->deleteImage($image);
-        return response()->json(["message" => "Image deleted successfully"]);
+
+        return response()->json(['message' => 'Image deleted successfully']);
     }
 }

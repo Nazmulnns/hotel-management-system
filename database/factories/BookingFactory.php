@@ -24,11 +24,11 @@ class BookingFactory extends Factory
             'reference' => fake()->sentence(),
             'guest_id' => Guest::factory(),
             'check_in' => CarbonImmutable::parse(fake()->dateTimeBetween('-2 months', '+2 months'))->startOfDay(),
-            'check_out' => fn(array $attributes) => CarbonImmutable::parse(fake()->dateTimeBetween(
+            'check_out' => fn (array $attributes) => CarbonImmutable::parse(fake()->dateTimeBetween(
                 CarbonImmutable::parse($attributes['check_in'])->addDay(),
                 CarbonImmutable::parse($attributes['check_in'])->addDays(7)
             ))->startOfDay(),
-            'booking_date' => fn(array $attributes) => CarbonImmutable::parse($attributes['check_in'])->subDays(fake()->numberBetween(1, 30))->min(CarbonImmutable::today()),
+            'booking_date' => fn (array $attributes) => CarbonImmutable::parse($attributes['check_in'])->subDays(fake()->numberBetween(1, 30))->min(CarbonImmutable::today()),
             'total_amount' => 0,
             'status' => fn (array $attributes) => $this->statusForDates(
                 CarbonImmutable::parse($attributes['check_in']),
@@ -39,20 +39,20 @@ class BookingFactory extends Factory
 
     public function cancelled(): static
     {
-        return $this->state(fn (array $attributes) =>[
+        return $this->state(fn (array $attributes) => [
             'status' => 'cancelled',
         ]);
     }
 
     private function statusForDates(CarbonImmutable $checkIn, CarbonImmutable $checkOut): string
     {
-         $today = CarbonImmutable::today();
+        $today = CarbonImmutable::today();
 
-         return match (true) {
+        return match (true) {
             $checkOut->lte($today) => 'checked_out',
             $checkIn->lte($today) => 'checked_in',
             default => fake()->randomElement(['pending', 'confirmed']),
-         };
+        };
     }
 
     public function withRoom(?Room $room = null): static

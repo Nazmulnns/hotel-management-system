@@ -34,7 +34,7 @@ class UserFactory extends Factory
             'role' => UserRole::Receptionist,
             'is_active' => true,
             'last_login_at' => null,
-            'phone_number' => '01' . fake()->numberBetween(3, 9).fake()->unique()->numerify('########'),
+            'phone_number' => '01'.fake()->numberBetween(3, 9).fake()->unique()->numerify('########'),
             'employee_image_url' => null,
         ];
     }

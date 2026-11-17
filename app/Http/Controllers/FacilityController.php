@@ -7,7 +7,6 @@ use App\Http\Resources\FacilityResource;
 use App\Services\FacilityService;
 use Exception;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class FacilityController extends Controller
@@ -22,6 +21,7 @@ class FacilityController extends Controller
     public function getAllFacilities(): AnonymousResourceCollection
     {
         $facilities = $this->facilityService->getAll();
+
         return FacilityResource::collection($facilities);
     }
 
@@ -38,10 +38,11 @@ class FacilityController extends Controller
             $preFacilityName = $facility->facility_name;
 
             $updatedFacility = $this->facilityService->updateFacilityNameById($facility, $request->facility_name);
+
             return (new FacilityResource($updatedFacility))
                 ->additional(['message' => "Facility {$preFacilityName} is changed to {$request->facility_name} successfully"]);
         } catch (Exception $e) {
-            return response()->json(['message' => "Something went wrong"]);
+            return response()->json(['message' => 'Something went wrong']);
         }
     }
 
@@ -54,7 +55,7 @@ class FacilityController extends Controller
             return (new FacilityResource($this->facilityService->addNewFacility($newFacilityName)))
                 ->additional(['message' => "Facility Name {$newFacilityName} is successfully added"]);
         } catch (Exception $e) {
-            return response()->json(['message' => "Something went wrong"]);
+            return response()->json(['message' => 'Something went wrong']);
         }
     }
 
@@ -67,9 +68,10 @@ class FacilityController extends Controller
             }
 
             $this->facilityService->deleteFacility($facility);
+
             return response()->json(['message' => "Facility {$facility->facility_name} is deleted successfully"], 200);
         } catch (Exception $e) {
-            return response()->json(['message' => "Something went wrong"]);
+            return response()->json(['message' => 'Something went wrong']);
         }
     }
 }

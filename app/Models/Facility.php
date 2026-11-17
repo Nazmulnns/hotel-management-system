@@ -12,7 +12,7 @@ class Facility extends Model
     use HasFactory;
 
     protected $fillable = [
-        'facility_name'
+        'facility_name',
     ];
 
     public function rooms(): BelongsToMany
@@ -23,7 +23,7 @@ class Facility extends Model
     protected function facilityName(): Attribute
     {
         return Attribute::make(
-            set: fn (string $value) => strtoupper(trim($value, " \"")),
+            set: fn (string $value) => strtoupper(trim($value, ' "')),
         );
     }
 }

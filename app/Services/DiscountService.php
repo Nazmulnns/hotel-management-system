@@ -7,7 +7,6 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class DiscountService
 {
-
     public function getDiscounts(?array $filters): LengthAwarePaginator
     {
         $query = Discount::query();
@@ -47,6 +46,7 @@ class DiscountService
     public function updateDiscount(Discount $discount, ?array $data): ?Discount
     {
         $discount->update($data);
+
         return $discount;
     }
 

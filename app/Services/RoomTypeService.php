@@ -26,15 +26,17 @@ class RoomTypeService
         $roomType->name = strtoupper(str_replace('"', '', $roomTypeName));
         $roomType->description = str_replace('"', '', $roomTypeDescription);
         $roomType->save();
+
         return $roomType;
     }
 
     public function addNewRoomType(string $roomTypeName, ?string $roomTypeDescription = null)
     {
-        $newRoomType = new RoomType();
+        $newRoomType = new RoomType;
         $newRoomType->name = strtoupper(str_replace('"', '', $roomTypeName));
         $newRoomType->description = str_replace('"', '', $roomTypeDescription);
         $newRoomType->save();
+
         return $newRoomType;
     }
 
@@ -44,6 +46,7 @@ class RoomTypeService
             return false;
         }
         $roomType->rooms()->delete();
+
         return $roomType->delete();
     }
 }

@@ -21,18 +21,18 @@ class RoomMaintenanceServiceTest extends TestCase
     {
         parent::setUp();
 
-        $this->service = new RoomMaintenanceService();
+        $this->service = new RoomMaintenanceService;
         $this->room = Room::factory()->create(['floor' => 2, 'room_number' => 'A']);
     }
 
     public function test_it_saves_new_issue_as_pending(): void
     {
         Notification::fake();
-        
+
         $maintenance = $this->service->reportMaintenance($this->room, [
             'issue_description' => 'AC is not cooling at all',
         ]);
-        
+
         $this->assertSame(MaintenanceStatus::Pending, $maintenance->maintenance_status);
         $this->assertDatabaseHas('room_maintenances', [
             'id' => $maintenance->id,

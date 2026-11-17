@@ -21,7 +21,7 @@ class BookingSeeder extends Seeder
 
         DB::transaction(function () use ($guests, $rooms): void {
             foreach ($guests as $guest) {
-                $numberOfBookings = fake()->randomElement([1,1,1,1,1,1,2,2,2,2,3,3,3]);
+                $numberOfBookings = fake()->randomElement([1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3]);
                 for ($bookingNumber = 1; $bookingNumber <= $numberOfBookings; $bookingNumber++) {
                     $this->tryToBook($guest, $rooms);
                 }
@@ -41,6 +41,7 @@ class BookingSeeder extends Seeder
             }
 
             $this->createBooking($guest, $room, $checkIn, $checkOut);
+
             return;
         }
     }

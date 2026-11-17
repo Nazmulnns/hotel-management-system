@@ -28,10 +28,8 @@ class DiscountSeeder extends Seeder
             ['discount_code' => 'HONEYMOON22', 'percentage' => 22, 'expiry_date' => $now->copy()->addMonths(5)],
             ['discount_code' => 'STUDENT8',    'percentage' => 8,  'expiry_date' => $now->copy()->addMonths(6)],
 
-            // Ekhuni expire hobe (test er jonno)
             ['discount_code' => 'FLASH25',     'percentage' => 25, 'expiry_date' => $now->copy()->addDays(2)],
 
-            // Expired (test er jonno)
             ['discount_code' => 'SUMMER2026',  'percentage' => 20, 'expiry_date' => Carbon::create(2026, 8, 31)],
             ['discount_code' => 'MONSOON10',   'percentage' => 10, 'expiry_date' => $now->copy()->subDays(10)],
         ];

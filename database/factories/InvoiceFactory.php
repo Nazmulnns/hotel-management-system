@@ -23,7 +23,7 @@ class InvoiceFactory extends Factory
     {
         return [
             'booking_id' => Booking::factory()->withRoom(),
-            'invoice_number' => fn (array $attributes) => 'INV-' . str_pad((string) $attributes['booking_id'], 6, '0', STR_PAD_LEFT),
+            'invoice_number' => fn (array $attributes) => 'INV-'.str_pad((string) $attributes['booking_id'], 6, '0', STR_PAD_LEFT),
             'status' => 'issued',
         ];
     }
